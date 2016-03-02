@@ -386,7 +386,6 @@ PRODUCT_PACKAGES += \
     libwpa_client \
     hostapd \
     readmac \
-    dhcpcd.conf \
     wpa_supplicant \
     wpa_supplicant.conf
 
