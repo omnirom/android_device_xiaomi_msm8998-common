@@ -356,6 +356,7 @@ PRODUCT_PACKAGES += \
 # Wifi
 PRODUCT_PACKAGES += \
     hostapd \
+    readmac \
     hostapd_cli \
     libqsap_sdk \
     libQWiFiSoftApCfg \
