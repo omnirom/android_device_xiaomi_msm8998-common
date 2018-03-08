@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
- * Copyright (C) 2017 The Android Open Source Project
- * Copyright (C) 2017 The LineageOS Project
+ * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -32,17 +30,16 @@
 #define LOG_NIDEBUG 0
 
 #include <errno.h>
+#include <inttypes.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <dlfcn.h>
-#include <inttypes.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #define LOG_TAG "QCOM PowerHAL"
-#include <log/log.h>
+#include <utils/Log.h>
 #include <hardware/power.h>
 
 #include "utils.h"
@@ -50,69 +47,19 @@
 #include "hint-data.h"
 #include "performance.h"
 #include "power-common.h"
-#include "power-feature.h"
 #include "power-helper.h"
-
-#define USINSEC 1000000L
-#define NSINUS 1000L
-
-#ifndef RPM_STAT
-#define RPM_STAT "/d/rpm_stats"
-#endif
-
-#ifndef RPM_MASTER_STAT
-#define RPM_MASTER_STAT "/d/rpm_master_stats"
-#endif
 
 #ifndef RPM_SYSTEM_STAT
 #define RPM_SYSTEM_STAT "/d/system_stats"
 #endif
 
-/*
-   Set with TARGET_WLAN_POWER_STAT in BoardConfig.mk
-   Defaults to QCACLD3 path
-   Path for QCACLD3: /d/wlan0/power_stats
-   Path for QCACLD2 and Prima: /d/wlan_wcnss/power_stats
- */
-
-#ifndef V1_0_HAL
 #ifndef WLAN_POWER_STAT
 #define WLAN_POWER_STAT "/d/wlan0/power_stats"
 #endif
-#endif
 
+#define ARRAY_SIZE(x) (sizeof((x))/sizeof((x)[0]))
 #define LINE_SIZE 128
 
-#ifdef LEGACY_STATS
-/* Use these stats on pre-nougat qualcomm kernels */
-static const char *rpm_param_names[] = {
-    "vlow_count",
-    "accumulated_vlow_time",
-    "vmin_count",
-    "accumulated_vmin_time"
-};
-
-static const char *rpm_master_param_names[] = {
-    "xo_accumulated_duration",
-    "xo_count",
-    "xo_accumulated_duration",
-    "xo_count",
-    "xo_accumulated_duration",
-    "xo_count",
-    "xo_accumulated_duration",
-    "xo_count"
-};
-
-#ifndef V1_0_HAL
-static const char *wlan_param_names[] = {
-    "cumulative_sleep_time_ms",
-    "cumulative_total_on_time_ms",
-    "deep_sleep_enter_counter",
-    "last_deep_sleep_enter_tstamp_ms"
-};
-#endif
-#else
-/* Use these stats on nougat kernels and forward */
 const char *rpm_stat_params[MAX_RPM_PARAMS] = {
     "count",
     "actual last sleep(msec)",
@@ -131,9 +78,8 @@ struct stat_pair rpm_stat_map[] = {
     { VOTER_ADSP,    "ADSP",    master_stat_params, ARRAY_SIZE(master_stat_params) },
     { VOTER_SLPI,    "SLPI",    master_stat_params, ARRAY_SIZE(master_stat_params) },
 };
-#endif
 
-#ifndef V1_0_HAL
+
 const char *wlan_power_stat_params[] = {
     "cumulative_sleep_time_ms",
     "cumulative_total_on_time_ms",
@@ -144,12 +90,12 @@ const char *wlan_power_stat_params[] = {
 struct stat_pair wlan_stat_map[] = {
     { WLAN_POWER_DEBUG_STATS, "POWER DEBUG STATS", wlan_power_stat_params, ARRAY_SIZE(wlan_power_stat_params) },
 };
-#endif
 
 static int saved_dcvs_cpu0_slack_max = -1;
 static int saved_dcvs_cpu0_slack_min = -1;
 static int saved_mpdecision_slack_max = -1;
 static int saved_mpdecision_slack_min = -1;
+static int saved_interactive_mode = -1;
 static int slack_node_rw_failed = 0;
 static int display_hint_sent;
 
@@ -158,110 +104,14 @@ void power_init(void)
     ALOGI("QCOM power HAL initing.");
 }
 
-static void process_video_decode_hint(void *metadata)
-{
-    char governor[80];
-    struct video_decode_metadata_t video_decode_metadata;
-
-    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-        ALOGE("Can't obtain scaling governor.");
-
-        return;
-    }
-
-    if (metadata) {
-        ALOGI("Processing video decode hint. Metadata: %s", (char *)metadata);
-    }
-
-    /* Initialize encode metadata struct fields. */
-    memset(&video_decode_metadata, 0, sizeof(struct video_decode_metadata_t));
-    video_decode_metadata.state = -1;
-    video_decode_metadata.hint_id = DEFAULT_VIDEO_DECODE_HINT_ID;
-
-    if (metadata) {
-        if (parse_video_decode_metadata((char *)metadata, &video_decode_metadata) ==
-            -1) {
-            ALOGE("Error occurred while parsing metadata.");
-            return;
-        }
-    } else {
-        return;
-    }
-
-    if (video_decode_metadata.state == 1) {
-        if (is_ondemand_governor(governor)) {
-            int resource_values[] = {THREAD_MIGRATION_SYNC_OFF};
-
-            perform_hint_action(video_decode_metadata.hint_id,
-                    resource_values, ARRAY_SIZE(resource_values));
-        } else if (is_interactive_governor(governor)) {
-            int resource_values[] = {TR_MS_30, HISPEED_LOAD_90, HS_FREQ_1026, THREAD_MIGRATION_SYNC_OFF};
-
-            perform_hint_action(video_decode_metadata.hint_id,
-                    resource_values, ARRAY_SIZE(resource_values));
-        }
-    } else if (video_decode_metadata.state == 0) {
-        if (is_ondemand_governor(governor)) {
-            undo_hint_action(video_decode_metadata.hint_id);
-        } else if (is_interactive_governor(governor)) {
-            undo_hint_action(video_decode_metadata.hint_id);
-        }
-    }
-}
-
-static void process_video_encode_hint(void *metadata)
-{
-    char governor[80];
-    struct video_encode_metadata_t video_encode_metadata;
-
-    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-        ALOGE("Can't obtain scaling governor.");
-
-        return;
-    }
-
-    /* Initialize encode metadata struct fields. */
-    memset(&video_encode_metadata, 0, sizeof(struct video_encode_metadata_t));
-    video_encode_metadata.state = -1;
-    video_encode_metadata.hint_id = DEFAULT_VIDEO_ENCODE_HINT_ID;
-
-    if (metadata) {
-        if (parse_video_encode_metadata((char *)metadata, &video_encode_metadata) ==
-            -1) {
-            ALOGE("Error occurred while parsing metadata.");
-            return;
-        }
-    } else {
-        return;
-    }
-
-    if (video_encode_metadata.state == 1) {
-        if (is_ondemand_governor(governor)) {
-            int resource_values[] = {IO_BUSY_OFF, SAMPLING_DOWN_FACTOR_1, THREAD_MIGRATION_SYNC_OFF};
-
-            perform_hint_action(video_encode_metadata.hint_id,
-                    resource_values, ARRAY_SIZE(resource_values));
-        } else if (is_interactive_governor(governor)) {
-            int resource_values[] = {TR_MS_30, HISPEED_LOAD_90, HS_FREQ_1026, THREAD_MIGRATION_SYNC_OFF,
-                INTERACTIVE_IO_BUSY_OFF};
-
-            perform_hint_action(video_encode_metadata.hint_id,
-                    resource_values, ARRAY_SIZE(resource_values));
-        }
-    } else if (video_encode_metadata.state == 0) {
-        if (is_ondemand_governor(governor)) {
-            undo_hint_action(video_encode_metadata.hint_id);
-        } else if (is_interactive_governor(governor)) {
-            undo_hint_action(video_encode_metadata.hint_id);
-        }
-    }
-}
-
 int __attribute__ ((weak)) power_hint_override(power_hint_t UNUSED(hint),
                                                void *UNUSED(data))
 {
     return HINT_NONE;
 }
+
+/* Declare function before use */
+void interaction(int duration, int num_args, int opt_list[]);
 
 void power_hint(power_hint_t hint, void *data)
 {
@@ -272,12 +122,14 @@ void power_hint(power_hint_t hint, void *data)
     }
 
     switch(hint) {
+        case POWER_HINT_VSYNC:
+        break;
         case POWER_HINT_SUSTAINED_PERFORMANCE:
-            ALOGI("Sustained perf power hint not handled in power_hint_override");
-        break;
+            ALOGD("Sustained perf power hint not handled in power_hint_override");
+            break;
         case POWER_HINT_VR_MODE:
-            ALOGI("VR mode power hint not handled in power_hint_override");
-        break;
+            ALOGD("VR mode power hint not handled in power_hint_override");
+            break;
         case POWER_HINT_INTERACTION:
         {
             int resources[] = {0x702, 0x20F, 0x30F};
@@ -285,16 +137,15 @@ void power_hint(power_hint_t hint, void *data)
 
             interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
         }
-        break;
-        case POWER_HINT_VIDEO_ENCODE:
-            process_video_encode_hint(data);
-        break;
-        case POWER_HINT_VIDEO_DECODE:
-            process_video_decode_hint(data);
-        break;
+            break;
         default:
         break;
     }
+}
+
+int __attribute__ ((weak)) is_perf_hint_active(int UNUSED(hint))
+{
+    return 0;
 }
 
 int __attribute__ ((weak)) set_interactive_override(int UNUSED(on))
@@ -302,42 +153,18 @@ int __attribute__ ((weak)) set_interactive_override(int UNUSED(on))
     return HINT_NONE;
 }
 
-#ifdef SET_INTERACTIVE_EXT
-extern void power_set_interactive_ext(int on);
-#endif
-
 void power_set_interactive(int on)
 {
     char governor[80];
     char tmp_str[NODE_MAX];
+    struct video_encode_metadata_t video_encode_metadata;
     int rc = 0;
-
-    if (!on) {
-        /* Send Display OFF hint to perf HAL */
-        perf_hint_enable(VENDOR_HINT_DISPLAY_OFF, 0);
-    } else {
-        /* Send Display ON hint to perf HAL */
-        perf_hint_enable(VENDOR_HINT_DISPLAY_ON, 0);
-    }
-
-    /**
-     * Ignore consecutive display-off hints
-     * Consecutive display-on hints are already handled
-     */
-    if (display_hint_sent && !on)
-        return;
-
-    display_hint_sent = !on;
-
-#ifdef SET_INTERACTIVE_EXT
-    power_set_interactive_ext(on);
-#endif
 
     if (set_interactive_override(on) == HINT_HANDLED) {
         return;
     }
 
-    ALOGI("Got set_interactive hint");
+    ALOGD("Got set_interactive hint");
 
     if (get_scaling_governor(governor, sizeof(governor)) == -1) {
         ALOGE("Can't obtain scaling governor.");
@@ -347,104 +174,115 @@ void power_set_interactive(int on)
 
     if (!on) {
         /* Display off. */
-        if (is_ondemand_governor(governor)) {
-            int resource_values[] = { MS_500, THREAD_MIGRATION_SYNC_OFF };
+        if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
+            int resource_values[] = {DISPLAY_OFF, MS_500, THREAD_MIGRATION_SYNC_OFF};
 
-            perform_hint_action(DISPLAY_STATE_HINT_ID,
-                    resource_values, ARRAY_SIZE(resource_values));
-        } else if (is_interactive_governor(governor)) {
+            if (!display_hint_sent) {
+                perform_hint_action(DISPLAY_STATE_HINT_ID,
+                        resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
+                display_hint_sent = 1;
+            }
+        } else if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
             int resource_values[] = {TR_MS_50, THREAD_MIGRATION_SYNC_OFF};
 
-            perform_hint_action(DISPLAY_STATE_HINT_ID,
-                    resource_values, ARRAY_SIZE(resource_values));
-        } else if (is_msmdcvs_governor(governor)) {
-            /* Display turned off. */
-            if (sysfs_read(DCVS_CPU0_SLACK_MAX_NODE, tmp_str, NODE_MAX - 1)) {
-                if (!slack_node_rw_failed) {
-                    ALOGE("Failed to read from %s", DCVS_CPU0_SLACK_MAX_NODE);
-                }
-
-                rc = 1;
-            } else {
-                saved_dcvs_cpu0_slack_max = atoi(tmp_str);
+            if (!display_hint_sent) {
+                perform_hint_action(DISPLAY_STATE_HINT_ID,
+                        resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
+                display_hint_sent = 1;
             }
-
-            if (sysfs_read(DCVS_CPU0_SLACK_MIN_NODE, tmp_str, NODE_MAX - 1)) {
-                if (!slack_node_rw_failed) {
-                    ALOGE("Failed to read from %s", DCVS_CPU0_SLACK_MIN_NODE);
-                }
-
-                rc = 1;
-            } else {
-                saved_dcvs_cpu0_slack_min = atoi(tmp_str);
-            }
-
-            if (sysfs_read(MPDECISION_SLACK_MAX_NODE, tmp_str, NODE_MAX - 1)) {
-                if (!slack_node_rw_failed) {
-                    ALOGE("Failed to read from %s", MPDECISION_SLACK_MAX_NODE);
-                }
-
-                rc = 1;
-            } else {
-                saved_mpdecision_slack_max = atoi(tmp_str);
-            }
-
-            if (sysfs_read(MPDECISION_SLACK_MIN_NODE, tmp_str, NODE_MAX - 1)) {
-                if(!slack_node_rw_failed) {
-                    ALOGE("Failed to read from %s", MPDECISION_SLACK_MIN_NODE);
-                }
-
-                rc = 1;
-            } else {
-                saved_mpdecision_slack_min = atoi(tmp_str);
-            }
-
-            /* Write new values. */
-            if (saved_dcvs_cpu0_slack_max != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_dcvs_cpu0_slack_max);
-
-                if (sysfs_write(DCVS_CPU0_SLACK_MAX_NODE, tmp_str) != 0) {
+        } else if ((strncmp(governor, MSMDCVS_GOVERNOR, strlen(MSMDCVS_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(MSMDCVS_GOVERNOR))) {
+            if (saved_interactive_mode == 1){
+                /* Display turned off. */
+                if (sysfs_read(DCVS_CPU0_SLACK_MAX_NODE, tmp_str, NODE_MAX - 1)) {
                     if (!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MAX_NODE);
+                        ALOGE("Failed to read from %s", DCVS_CPU0_SLACK_MAX_NODE);
                     }
 
                     rc = 1;
+                } else {
+                    saved_dcvs_cpu0_slack_max = atoi(tmp_str);
                 }
-            }
 
-            if (saved_dcvs_cpu0_slack_min != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_dcvs_cpu0_slack_min);
-
-                if (sysfs_write(DCVS_CPU0_SLACK_MIN_NODE, tmp_str) != 0) {
-                    if(!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MIN_NODE);
+                if (sysfs_read(DCVS_CPU0_SLACK_MIN_NODE, tmp_str, NODE_MAX - 1)) {
+                    if (!slack_node_rw_failed) {
+                        ALOGE("Failed to read from %s", DCVS_CPU0_SLACK_MIN_NODE);
                     }
 
                     rc = 1;
+                } else {
+                    saved_dcvs_cpu0_slack_min = atoi(tmp_str);
                 }
-            }
 
-            if (saved_mpdecision_slack_max != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_mpdecision_slack_max);
-
-                if (sysfs_write(MPDECISION_SLACK_MAX_NODE, tmp_str) != 0) {
-                    if(!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", MPDECISION_SLACK_MAX_NODE);
+                if (sysfs_read(MPDECISION_SLACK_MAX_NODE, tmp_str, NODE_MAX - 1)) {
+                    if (!slack_node_rw_failed) {
+                        ALOGE("Failed to read from %s", MPDECISION_SLACK_MAX_NODE);
                     }
 
                     rc = 1;
+                } else {
+                    saved_mpdecision_slack_max = atoi(tmp_str);
                 }
-            }
 
-            if (saved_mpdecision_slack_min != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_mpdecision_slack_min);
-
-                if (sysfs_write(MPDECISION_SLACK_MIN_NODE, tmp_str) != 0) {
+                if (sysfs_read(MPDECISION_SLACK_MIN_NODE, tmp_str, NODE_MAX - 1)) {
                     if(!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", MPDECISION_SLACK_MIN_NODE);
+                        ALOGE("Failed to read from %s", MPDECISION_SLACK_MIN_NODE);
                     }
 
                     rc = 1;
+                } else {
+                    saved_mpdecision_slack_min = atoi(tmp_str);
+                }
+
+                /* Write new values. */
+                if (saved_dcvs_cpu0_slack_max != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_dcvs_cpu0_slack_max);
+
+                    if (sysfs_write(DCVS_CPU0_SLACK_MAX_NODE, tmp_str) != 0) {
+                        if (!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MAX_NODE);
+                        }
+
+                        rc = 1;
+                    }
+                }
+
+                if (saved_dcvs_cpu0_slack_min != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_dcvs_cpu0_slack_min);
+
+                    if (sysfs_write(DCVS_CPU0_SLACK_MIN_NODE, tmp_str) != 0) {
+                        if(!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MIN_NODE);
+                        }
+
+                        rc = 1;
+                    }
+                }
+
+                if (saved_mpdecision_slack_max != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_mpdecision_slack_max);
+
+                    if (sysfs_write(MPDECISION_SLACK_MAX_NODE, tmp_str) != 0) {
+                        if(!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", MPDECISION_SLACK_MAX_NODE);
+                        }
+
+                        rc = 1;
+                    }
+                }
+
+                if (saved_mpdecision_slack_min != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", 10 * saved_mpdecision_slack_min);
+
+                    if (sysfs_write(MPDECISION_SLACK_MIN_NODE, tmp_str) != 0) {
+                        if(!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", MPDECISION_SLACK_MIN_NODE);
+                        }
+
+                        rc = 1;
+                    }
                 }
             }
 
@@ -452,160 +290,74 @@ void power_set_interactive(int on)
         }
     } else {
         /* Display on. */
-        if (is_ondemand_governor(governor)) {
+        if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
             undo_hint_action(DISPLAY_STATE_HINT_ID);
-        } else if (is_interactive_governor(governor)) {
+            display_hint_sent = 0;
+        } else if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
             undo_hint_action(DISPLAY_STATE_HINT_ID);
-        } else if (is_msmdcvs_governor(governor)) {
-            /* Display turned on. Restore if possible. */
-            if (saved_dcvs_cpu0_slack_max != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", saved_dcvs_cpu0_slack_max);
+            display_hint_sent = 0;
+        } else if ((strncmp(governor, MSMDCVS_GOVERNOR, strlen(MSMDCVS_GOVERNOR)) == 0) &&
+                (strlen(governor) == strlen(MSMDCVS_GOVERNOR))) {
+            if (saved_interactive_mode == -1 || saved_interactive_mode == 0) {
+                /* Display turned on. Restore if possible. */
+                if (saved_dcvs_cpu0_slack_max != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", saved_dcvs_cpu0_slack_max);
 
-                if (sysfs_write(DCVS_CPU0_SLACK_MAX_NODE, tmp_str) != 0) {
-                    if (!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MAX_NODE);
+                    if (sysfs_write(DCVS_CPU0_SLACK_MAX_NODE, tmp_str) != 0) {
+                        if (!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MAX_NODE);
+                        }
+
+                        rc = 1;
                     }
-
-                    rc = 1;
                 }
-            }
 
-            if (saved_dcvs_cpu0_slack_min != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", saved_dcvs_cpu0_slack_min);
+                if (saved_dcvs_cpu0_slack_min != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", saved_dcvs_cpu0_slack_min);
 
-                if (sysfs_write(DCVS_CPU0_SLACK_MIN_NODE, tmp_str) != 0) {
-                    if (!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MIN_NODE);
+                    if (sysfs_write(DCVS_CPU0_SLACK_MIN_NODE, tmp_str) != 0) {
+                        if (!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", DCVS_CPU0_SLACK_MIN_NODE);
+                        }
+
+                        rc = 1;
                     }
-
-                    rc = 1;
                 }
-            }
 
-            if (saved_mpdecision_slack_max != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", saved_mpdecision_slack_max);
+                if (saved_mpdecision_slack_max != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", saved_mpdecision_slack_max);
 
-                if (sysfs_write(MPDECISION_SLACK_MAX_NODE, tmp_str) != 0) {
-                    if (!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", MPDECISION_SLACK_MAX_NODE);
+                    if (sysfs_write(MPDECISION_SLACK_MAX_NODE, tmp_str) != 0) {
+                        if (!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", MPDECISION_SLACK_MAX_NODE);
+                        }
+
+                        rc = 1;
                     }
-
-                    rc = 1;
                 }
-            }
 
-            if (saved_mpdecision_slack_min != -1) {
-                snprintf(tmp_str, NODE_MAX, "%d", saved_mpdecision_slack_min);
+                if (saved_mpdecision_slack_min != -1) {
+                    snprintf(tmp_str, NODE_MAX, "%d", saved_mpdecision_slack_min);
 
-                if (sysfs_write(MPDECISION_SLACK_MIN_NODE, tmp_str) != 0) {
-                    if (!slack_node_rw_failed) {
-                        ALOGE("Failed to write to %s", MPDECISION_SLACK_MIN_NODE);
+                    if (sysfs_write(MPDECISION_SLACK_MIN_NODE, tmp_str) != 0) {
+                        if (!slack_node_rw_failed) {
+                            ALOGE("Failed to write to %s", MPDECISION_SLACK_MIN_NODE);
+                        }
+
+                        rc = 1;
                     }
-
-                    rc = 1;
                 }
             }
 
             slack_node_rw_failed = rc;
         }
     }
+
+    saved_interactive_mode = !!on;
 }
 
-void __attribute__((weak)) set_device_specific_feature(feature_t UNUSED(feature), int UNUSED(state))
-{
-}
-
-void set_feature(feature_t feature, int state)
-{
-    switch (feature) {
-#ifdef TAP_TO_WAKE_NODE
-        case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-            sysfs_write(TAP_TO_WAKE_NODE, state ? "1" : "0");
-            break;
-#endif
-        default:
-            break;
-    }
-    set_device_specific_feature(feature, state);
-}
-
-#ifdef LEGACY_STATS
-static int extract_stats(uint64_t *list, char *file, const char**param_names,
-                         unsigned int num_parameters, int isHex) {
-    FILE *fp;
-    ssize_t read;
-    size_t len;
-    size_t index = 0;
-    char *line;
-    int ret;
-
-    fp = fopen(file, "r");
-    if (fp == NULL) {
-        ret = -errno;
-        ALOGE("%s: failed to open: %s Error = %s", __func__, file, strerror(errno));
-        return ret;
-    }
-
-    for (line = NULL, len = 0;
-         ((read = getline(&line, &len, fp) != -1) && (index < num_parameters));
-         free(line), line = NULL, len = 0) {
-        uint64_t value;
-        char* offset;
-
-        size_t begin = strspn(line, " \t");
-        if (strncmp(line + begin, param_names[index], strlen(param_names[index]))) {
-            continue;
-        }
-
-        offset = memchr(line, ':', len);
-        if (!offset) {
-            continue;
-        }
-
-        if (isHex) {
-            sscanf(offset, ":%" SCNx64, &value);
-        } else {
-            sscanf(offset, ":%" SCNu64, &value);
-        }
-        list[index] = value;
-        index++;
-    }
-
-    free(line);
-    fclose(fp);
-
-    return 0;
-}
-
-int extract_platform_stats(uint64_t *list) {
-    int ret;
-    //Data is located in two files
-    ret = extract_stats(list, RPM_STAT, rpm_param_names, RPM_PARAM_COUNT, false);
-    if (ret) {
-        for (size_t i=0; i < RPM_PARAM_COUNT; i++)
-            list[i] = 0;
-    }
-    ret = extract_stats(list + RPM_PARAM_COUNT, RPM_MASTER_STAT,
-                        rpm_master_param_names, PLATFORM_PARAM_COUNT - RPM_PARAM_COUNT, true);
-    if (ret) {
-        for (size_t i=RPM_PARAM_COUNT; i < PLATFORM_PARAM_COUNT; i++)
-        list[i] = 0;
-    }
-    return 0;
-}
-
-#ifndef V1_0_HAL
-int extract_wlan_stats(uint64_t *list) {
-    int ret;
-    ret = extract_stats(list, WLAN_POWER_STAT, wlan_param_names, WLAN_POWER_PARAMS_COUNT, false);
-    if (ret) {
-        for (size_t i=0; i < WLAN_POWER_PARAMS_COUNT; i++)
-            list[i] = 0;
-    }
-    return 0;
-}
-#endif
-#else
 
 static int parse_stats(const char **params, size_t params_size,
                        uint64_t *list, FILE *fp) {
@@ -641,6 +393,7 @@ static int parse_stats(const char **params, size_t params_size,
 
     return 0;
 }
+
 
 static int extract_stats(uint64_t *list, char *file,
                          struct stat_pair *map, size_t map_size) {
@@ -692,9 +445,6 @@ int extract_platform_stats(uint64_t *list) {
     return extract_stats(list, RPM_SYSTEM_STAT, rpm_stat_map, ARRAY_SIZE(rpm_stat_map));
 }
 
-#ifndef V1_0_HAL
 int extract_wlan_stats(uint64_t *list) {
     return extract_stats(list, WLAN_POWER_STAT, wlan_stat_map, ARRAY_SIZE(wlan_stat_map));
 }
-#endif
-#endif
