@@ -82,7 +82,6 @@ persist.demo.hdmirotationlock=false
 persist.hwc.enable_vds=1
 ro.opengles.version=196610
 ro.sf.lcd_density=480
-sdm.perf_hint_window=50
 vendor.display.enable_default_color_mode=1
 
 # DPM
@@ -146,9 +145,9 @@ ro.se.type=eSE,HCE,UICC
 # Perf
 persist.sys.perf.debug=true
 ro.vendor.extension_library=libqti-perfd-client.so
-ro.vendor.qti.core_ctl_max_cpu=4
-ro.vendor.qti.core_ctl_min_cpu=2
 ro.vendor.qti.sys.fw.bg_apps_limit=60
+sdm.perf_hint_window=50
+sdm.debug.disable_skip_validate=1
 
 # Sensors
 persist.sys.sensors.cfos=false
