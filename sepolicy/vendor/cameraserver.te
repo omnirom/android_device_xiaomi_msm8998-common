@@ -52,3 +52,6 @@ allow cameraserver sysfs_video4linux:dir search;
 allow cameraserver sysfs_video4linux:file { read open };
 
 allow cameraserver hal_perf_hwservice:hwservice_manager find;
+
+allow cameraserver perfd:unix_stream_socket connectto;
+allow cameraserver perfd_socket:sock_file write;

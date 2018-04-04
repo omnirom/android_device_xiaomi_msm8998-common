@@ -72,3 +72,6 @@ allow hal_fingerprint_default sysfs_leds:file { read open };
 allow hal_fingerprint_default sysfs_bt_device:file { read open };
 
 allow hal_fingerprint_default sysfs_fpc_wakeup:file { getattr open read write };
+
+allow hal_fingerprint_default perfd:unix_stream_socket connectto;
+allow hal_fingerprint_default perfd_socket:sock_file write;
