@@ -62,13 +62,6 @@ on late-fs
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_slpi/boot 1
 
-    # Start services for bootanim
-    start surfaceflinger
-    start bootanim
-    start hwcomposer-2-1
-    start configstore-hal-1-0
-    start gralloc-2-0
-
     mount_all /vendor/etc/fstab.qcom --late
 
 on post-fs-data
