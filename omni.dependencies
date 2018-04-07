@@ -49,12 +49,6 @@
   },
   {
     "remote": "omnirom",
-    "repository": "android_vendor_qcom_opensource_bluetooth",
-    "target_path": "vendor/qcom/opensource/bluetooth",
-    "revision": "android-8.1"
-  },
-  {
-    "remote": "omnirom",
     "repository": "android_kernel_xiaomi_msm8998",
     "target_path": "kernel/xiaomi/msm8998",
     "revision": "android-8.1"
