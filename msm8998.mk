@@ -169,6 +169,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fingerprint.msm8998
 
+# Device Settings
+PRODUCT_PACKAGES += \
+    XiaomiDoze \
+    XiaomiParts
+
 # For config.fs
 PRODUCT_PACKAGES += \
     fs_config_files
