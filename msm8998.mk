@@ -227,7 +227,7 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.msm8998
+    android.hardware.light@2.0-service.msm8998
 
 # LiveDisplay jni
 PRODUCT_PACKAGES += \
