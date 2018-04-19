@@ -1,3 +1,41 @@
+# ADSP
+vendor/bin/adsprpcd
+vendor/lib64/libadsprpc.so
+vendor/lib/libadsp_hvx_callback_skel.so
+vendor/lib/libadsp_hvx_stub.so
+vendor/lib64/libadsp_default_listener.so
+vendor/lib64/libfastcvadsp_stub.so
+vendor/lib64/libfastcvopt.so
+vendor/lib/libadsprpc.so
+vendor/lib/libadsp_default_listener.so
+vendor/lib/libfastcvadsp_stub.so
+vendor/lib/libfastcvopt.so
+
+# ADSP modules
+vendor/lib/rfsa/adsp/dirac_resource.so
+vendor/lib/rfsa/adsp/libapps_mem_heap.so
+vendor/lib/rfsa/adsp/libadsp_fd_skel.so
+vendor/lib/rfsa/adsp/libdirac-capiv2.so
+vendor/lib/rfsa/adsp/libdspCV_skel.so
+vendor/lib/rfsa/adsp/libexternal_dog_skel.so
+vendor/lib/rfsa/adsp/libfastcvadsp_skel.so
+vendor/lib/rfsa/adsp/libfastcvadsp.so
+vendor/lib/rfsa/adsp/libhvxMathVIO.so
+vendor/lib/rfsa/adsp/libscveBlobDescriptor_skel.so
+vendor/lib/rfsa/adsp/libscveT2T_skel.so
+vendor/lib/rfsa/adsp/libvpp_frc.so
+vendor/lib/rfsa/adsp/libvpp_svc_skel.so
+vendor/lib/rfsa/adsp/capi_v2_aptX_Classic.so
+vendor/lib/rfsa/adsp/capi_v2_aptX_HD.so
+vendor/lib/rfsa/adsp/dirac_resource.dar
+vendor/lib/rfsa/adsp/libFastRPC_AUE_Forward_skel.so
+vendor/lib/rfsa/adsp/libFastRPC_UTF_Forward_Qtc2_skel.so
+vendor/lib/rfsa/adsp/libFastRPC_UTF_Forward_skel.so
+vendor/lib/rfsa/adsp/libadsp_hvx_add_constant.so
+vendor/lib/rfsa/adsp/libadsp_hvx_skel.so
+vendor/lib/rfsa/adsp/libscveFaceLandmark_skel.so
+vendor/lib/rfsa/adsp/libsns_low_lat_stream_skel.so
+
 # Alarm 
 -vendor/framework/vendor.qti.hardware.alarm-V1.0-java.jar
 vendor/lib64/vendor.qti.hardware.alarm@1.0.so
@@ -567,7 +605,6 @@ vendor/lib64/vendor.qti.hardware.qdutils_disp@1.0_vendor.so
 # IMS
 -app/ims/ims.apk|aec816f2c32c290bf164f0ee27efdb72e18b4122
 -app/imssettings/imssettings.apk|839fe2ab7f2a21f26f5b16e6691fc4ef52feaf98
--app/uceShimService/uceShimService.apk
 etc/permissions/qti-vzw-ims-internal.xml
 lib64/com.qualcomm.qti.imscmservice@1.0.so
 lib64/libimscamera_jni.so
@@ -605,6 +642,7 @@ vendor/lib64/lib-rtpcore.so
 vendor/lib64/lib-rtpdaemoninterface.so
 vendor/lib64/lib-rtpsl.so
 vendor/lib64/lib-uceservice.so
+vendor/lib64/vendor.qti.hardware.radio.ims@1.0_vendor.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0_vendor.so
 vendor/lib/lib-imscmservice.so
@@ -616,6 +654,7 @@ vendor/lib/lib-rtpcore.so
 vendor/lib/lib-rtpdaemoninterface.so
 vendor/lib/lib-rtpsl.so
 vendor/lib/lib-uceservice.so
+vendor/lib/vendor.qti.hardware.radio.ims@1.0_vendor.so
 vendor/lib/vendor.qti.imsrtpservice@1.0-service-Impl.so
 vendor/lib/vendor.qti.imsrtpservice@1.0_vendor.so
 
@@ -773,21 +812,18 @@ vendor/lib/libqmi.so
 vendor/lib/libsmemlog.so
 
 # RIL
--app/datastatusnotification/datastatusnotification.apk
--app/embms/embms.apk
--app/QtiTelephonyService/QtiTelephonyService.apk
--app/radioconfig/radioconfig.apk
-etc/modem/Diag.cfg
+-app/datastatusnotification/datastatusnotification.apk|8616ebf9c365991a6756f3a81155dbafb810ad04
+-app/embms/embms.apk|a0a7c0d28fa3c13423060ff870452b97621347c4
+-app/QtiTelephonyService/QtiTelephonyService.apk|7b06681dd64029f9aeb0dded016094a94b1456cc
+-app/radioconfig/radioconfig.apk|f905ae39da257f4fcbdb23225542fe3cedf2aac0
 etc/permissions/embms.xml
 etc/permissions/qcrilhook.xml
-etc/permissions/radioconfiginterface.xml
-etc/permissions/radioconfig.xml
 etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
--framework/qcrilhook.jar
+-framework/qcrilhook.jar|29558373f9f6346e0126ff83e2aea5b7a9b9b54c
 framework/qti-telephony-common.jar|2eba987ae297a892e895ec1e9a302b41dbe0232e
 framework/QtiTelephonyServicelibrary.jar
--priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
+-priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk|92222f5c021b8c684b27394191a73203eb535146
 vendor/bin/netmgrd
 vendor/bin/port-bridge
 vendor/bin/qti
@@ -810,7 +846,7 @@ vendor/lib64/librilqmiservices.so
 vendor/lib64/libsettings.so
 vendor/lib64/libsystem_health_mon.so
 vendor/lib64/vendor.qti.hardware.radio.am@1.0_vendor.so
-vendor/lib64/vendor.qti.hardware.radio.ims@1.0_vendor.so
+vendor/lib64/vendor.qti.hardware.radio.atcmdfwd@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.lpa@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.qcrilhook@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.qtiradio@1.0_vendor.so
@@ -818,6 +854,14 @@ vendor/lib64/vendor.qti.hardware.radio.uim@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.uim_remote_client@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.uim_remote_server@1.0_vendor.so
 vendor/lib/libmdmdetect.so
+vendor/lib/vendor.qti.hardware.radio.am@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.atcmdfwd@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.lpa@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.qcrilhook@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.qtiradio@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.uim@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.uim_remote_client@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.radio.uim_remote_server@1.0_vendor.so
 vendor/radio/qcril_database/qcril.db
 
 # Secure Processor SubSystem
