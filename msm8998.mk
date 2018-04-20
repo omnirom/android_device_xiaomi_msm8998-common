@@ -319,12 +319,6 @@ PRODUCT_PACKAGES += \
     vr.msm8998 \
     thermal.msm8998
 
-# Tetheroffload
-PRODUCT_PACKAGES += \
-    ipacm \
-    liboffloadhal \
-    IPACM_cfg.xml
-
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
     textclassifier.smartselection.bundle1
