@@ -597,7 +597,7 @@ service ril-daemon3 /vendor/bin/hw/rild -c 3
     group radio cache inet misc audio sdcard_r sdcard_rw diag oem_2901 log
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
 
-service charger /sbin/chargeonlymode
+service charger /charger
     class charger
     group system graphics
     seclabel u:r:charger:s0
@@ -620,15 +620,31 @@ service vendor.msm_irqbl_sdm630 /vendor/bin/msm_irqbalance -f /system/vendor/etc
     disabled
 
 on charger
+<<<<<<< HEAD
     mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
     start hvdcp_opti
     setprop sys.usb.configfs 1
     start thermal-engine
+=======
+>>>>>>> parent of d90e6a4... msm8998-common: Use MIUI poweroff charging animation
     wait /dev/block/bootdevice/by-name/system
     mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
     setprop persist.sys.usb.config adb
     setprop sys.usb.config adb
     load_system_props
+<<<<<<< HEAD
+=======
+    start qcom-post-boot
+    start leds-sh
+
+#add poweroffhandler
+service poweroffhandler /system/vendor/bin/poweroffhandler
+    class core
+    user media
+    group graphics audio
+    disabled
+    oneshot
+>>>>>>> parent of d90e6a4... msm8998-common: Use MIUI poweroff charging animation
 
 on property:init.svc.surfaceflinger=restarting
     stop hwcomposer-2-1
