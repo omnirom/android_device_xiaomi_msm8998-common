@@ -142,9 +142,6 @@ on boot
     #Remove SUID bit for iproute2 ip tool
     chmod 0755 /system/bin/ip
 
-
-    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
-
     # Assign TCP buffer thresholds to be ceiling value of technology maximums
     # Increased technology maximums should be reflected here.
     write /proc/sys/net/core/rmem_max  8388608
@@ -623,10 +620,15 @@ service vendor.msm_irqbl_sdm630 /vendor/bin/msm_irqbalance -f /system/vendor/etc
     disabled
 
 on charger
+    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
+    start hvdcp_opti
+    setprop sys.usb.configfs 1
+    start thermal-engine
+    wait /dev/block/bootdevice/by-name/system
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
     setprop persist.sys.usb.config adb
     setprop sys.usb.config adb
     load_system_props
-    start thermal-engine
 
 on property:init.svc.surfaceflinger=restarting
     stop hwcomposer-2-1
