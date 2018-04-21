@@ -134,10 +134,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     SnapdragonCamera2
 
-# Charger
-PRODUCT_PACKAGES += \
-    chargeonlymode
-
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     cneapiclient \
