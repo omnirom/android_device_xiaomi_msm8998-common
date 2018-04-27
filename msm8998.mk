@@ -278,7 +278,7 @@ PRODUCT_PACKAGES += \
     com.nxp.nfc.nq.xml \
     libnqnfc-nci \
     nfc_nci.nqx.default \
-    libnqp61-jcop-kit \
+    libp61-jcop-kit \
     NQNfcNci \
     nqnfcee_access.xml \
     nqnfcse_access.xml \
