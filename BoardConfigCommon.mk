@@ -56,6 +56,7 @@ BOARD_ANT_WIRELESS_DEVICE := "qualcomm-uart"
 # Assert
 TARGET_BOARD_INFO_FILE := $(PLATFORM_PATH)/board-info.txt
 
+# Audio
 TARGET_QCOM_AUDIO_VARIANT := caf-msm8998
 TARGET_QCOM_MEDIA_VARIANT := caf-msm8998
 ### Audio Flags
@@ -192,7 +193,10 @@ TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/double_tap_enable"
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := false
 TARGET_USE_SDCLANG := true
+# Fix build on Jenkins
+BOARD_USES_VENDOR_QCOM := false
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/etc/fstab.qcom
@@ -203,13 +207,12 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
 TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 
-# RIL
-TARGET_RIL_VARIANT := caf
-
-# SELinux
+# selinux
 include device/qcom/sepolicy/sepolicy.mk
-
-BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
+include vendor/omni/sepolicy/sepolicy.mk
+BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/vendor
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/public
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/private
 
 # Vendor init
 TARGET_INIT_VENDOR_LIB := libinit_msm8998
