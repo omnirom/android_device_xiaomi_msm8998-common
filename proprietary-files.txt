@@ -442,24 +442,32 @@ vendor/firmware/a540_zap.elf
 vendor/firmware/a540_zap.mdt
 
 # IMS
--app/ims/ims.apk
--app/imssettings/imssettings.apk
--app/uceShimService/uceShimService.apk
+-app/ims/ims.apk|aec816f2c32c290bf164f0ee27efdb72e18b4122
+-app/imssettings/imssettings.apk|839fe2ab7f2a21f26f5b16e6691fc4ef52feaf98
 etc/permissions/qti-vzw-ims-internal.xml
-lib64/libdiag_system.so
-lib64/lib-imscamera.so
-lib64/lib-imsvideocodec.so
-lib64/lib-imsvt.so
-lib64/lib-imsvtextutils.so
-lib64/lib-imsvtutils.so
+lib64/com.qualcomm.qti.imscmservice@1.0.so
 lib64/libimscamera_jni.so
+lib64/lib-imscamera.so
 lib64/libimsmedia_jni.so
+lib64/lib-imsvideocodec.so
+lib64/lib-imsvtextutils.so
+lib64/lib-imsvt.so
+lib64/lib-imsvtutils.so
 lib64/librcc.so
 lib64/vendor.qti.imsrtpservice@1.0.so
-vendor/bin/ims_rtp_daemon
+lib/com.qualcomm.qti.imscmservice@1.0.so
+lib/libimscamera_jni.so
+lib/lib-imscamera.so
+lib/libimsmedia_jni.so
+lib/lib-imsvideocodec.so
+lib/lib-imsvtextutils.so
+lib/lib-imsvtutils.so
+lib/librcc.so
+lib/vendor.qti.imsrtpservice@1.0.so
 vendor/bin/imsdatadaemon
 vendor/bin/imsqmidaemon
 vendor/bin/imsrcsd
+vendor/bin/ims_rtp_daemon
 vendor/framework/qti-vzw-ims-internal.jar
 vendor/lib64/com.qualcomm.qti.imscmservice@1.0_vendor.so
 vendor/lib64/lib-dplmedia.so
@@ -473,8 +481,21 @@ vendor/lib64/lib-rtpcore.so
 vendor/lib64/lib-rtpdaemoninterface.so
 vendor/lib64/lib-rtpsl.so
 vendor/lib64/lib-uceservice.so
+vendor/lib64/vendor.qti.hardware.radio.ims@1.0_vendor.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0_vendor.so
+vendor/lib/lib-imscmservice.so
+vendor/lib/lib-imsdpl.so
+vendor/lib/lib-imsqimf.so
+vendor/lib/lib-imsrcs-v2.so
+vendor/lib/lib-imsxml.so
+vendor/lib/lib-rtpcore.so
+vendor/lib/lib-rtpdaemoninterface.so
+vendor/lib/lib-rtpsl.so
+vendor/lib/lib-uceservice.so
+vendor/lib/vendor.qti.hardware.radio.ims@1.0_vendor.so
+vendor/lib/vendor.qti.imsrtpservice@1.0-service-Impl.so
+vendor/lib/vendor.qti.imsrtpservice@1.0_vendor.so
 
 # IPA
 vendor/firmware/ipa_fws.b00
@@ -590,10 +611,10 @@ vendor/lib64/hw/vendor.qti.hardware.qteeconnector@1.0-impl.so
 vendor/lib64/vendor.qti.hardware.qteeconnector@1.0_vendor.so
 
 # RIL
--app/datastatusnotification/datastatusnotification.apk
--app/embms/embms.apk
--app/QtiTelephonyService/QtiTelephonyService.apk
--app/radioconfig/radioconfig.apk
+-app/datastatusnotification/datastatusnotification.apk|8616ebf9c365991a6756f3a81155dbafb810ad04
+-app/embms/embms.apk|a0a7c0d28fa3c13423060ff870452b97621347c4
+-app/QtiTelephonyService/QtiTelephonyService.apk|7b06681dd64029f9aeb0dded016094a94b1456cc
+-app/radioconfig/radioconfig.apk|f905ae39da257f4fcbdb23225542fe3cedf2aac0
 etc/modem/Diag.cfg
 etc/permissions/embms.xml
 etc/permissions/qcrilhook.xml
@@ -601,10 +622,10 @@ etc/permissions/radioconfig.xml
 etc/permissions/radioconfiginterface.xml
 etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
--framework/qcrilhook.jar
+-framework/qcrilhook.jar|29558373f9f6346e0126ff83e2aea5b7a9b9b54c
 framework/qti-telephony-common.jar|2eba987ae297a892e895ec1e9a302b41dbe0232e
 framework/QtiTelephonyServicelibrary.jar
--priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
+-priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk|92222f5c021b8c684b27394191a73203eb535146
 vendor/bin/netmgrd
 vendor/bin/port-bridge
 vendor/bin/qti
@@ -628,7 +649,7 @@ vendor/lib64/librilqmiservices.so
 vendor/lib64/libsettings.so
 vendor/lib64/libsystem_health_mon.so
 vendor/lib64/vendor.qti.hardware.radio.am@1.0_vendor.so
-vendor/lib64/vendor.qti.hardware.radio.ims@1.0_vendor.so
+vendor/lib64/vendor.qti.hardware.radio.atcmdfwd@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.lpa@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.qcrilhook@1.0_vendor.so
 vendor/lib64/vendor.qti.hardware.radio.qtiradio@1.0_vendor.so
