@@ -654,6 +654,11 @@ vendor/lib64/libsensor_user_cal.so
 vendor/lib64/libsns_low_lat_stream_stub.so
 vendor/lib64/sensors.ssc.so
 
+# Smartcardservice - from cheeseburger - OPM1.171019.011
+etc/permissions/org.simalliance.openmobileapi.xml|2106c9a80cb2b7a19164b21f1d3fe3a83b78ce46
+-framework/org.simalliance.openmobileapi.jar|5dd6fbe204642c51f196bef3b6d9b12d327260a9
+-priv-app/SmartcardService/SmartcardService.apk|c9aafb0c8b5659c4bab206b69e2b817ec876e05b
+
 # Thermal
 vendor/bin/msm_irqbalance
 vendor/bin/thermal-engine
