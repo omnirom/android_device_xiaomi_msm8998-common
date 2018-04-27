@@ -1,4 +1,3 @@
-
 # Copyright (C) 2016 The CyanogenMod Project
 # Copyright (C) 2017 The LineageOS Project
 #
@@ -13,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
 LOCAL_PATH:= $(call my-dir)
 
@@ -26,5 +24,6 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := -Wall -DANDROID_TARGET=\"$(TARGET_BOARD_PLATFORM)\"
 LOCAL_SRC_FILES := init_msm8998.cpp
 LOCAL_MODULE := libinit_msm8998
+LOCAL_STATIC_LIBRARIES := libselinux
 
 include $(BUILD_STATIC_LIBRARY)

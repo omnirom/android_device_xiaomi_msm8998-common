@@ -1,6 +1,7 @@
 /*
    Copyright (c) 2015, The Linux Foundation. All rights reserved.
    Copyright (C) 2016 The CyanogenMod Project.
+
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
    met:
@@ -13,6 +14,7 @@
     * Neither the name of The Linux Foundation nor the names of its
       contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
+
    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
@@ -28,19 +30,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <sys/sysinfo.h>
+#include <android-base/logging.h>
 
 #include <android-base/file.h>
 #include <android-base/properties.h>
 #include <android-base/strings.h>
 
 #include "property_service.h"
-#include "vendor_init.h"
 
 using android::base::GetProperty;
 using android::base::ReadFileToString;
 using android::base::Trim;
 using android::init::property_set;
+
+namespace android {
+namespace init {
+
+char const *heapminfree;
+char const *heapmaxfree;
 
 static void init_alarm_boot_properties()
 {
@@ -85,4 +93,7 @@ void vendor_load_properties()
         return;
 
     init_alarm_boot_properties();
+
 }
+}  // namespace init
+}  // namespace android
