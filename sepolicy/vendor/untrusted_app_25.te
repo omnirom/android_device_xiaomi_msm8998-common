@@ -6,4 +6,4 @@ allow untrusted_app_25 camera_prop:file { getattr open read };
 
 allow untrusted_app_25 rootfs:dir { read open };
 
-#allow untrusted_app_25 debugsfs_wakelock:file { getattr open read };
+dontaudit untrusted_app_25 debugsfs_wakelock:file { getattr open read };

@@ -78,10 +78,11 @@
 ###################################
 # System files
 #
-/system/vendor/bin/hw/android\.hardware\.power@1\.1-service\.msm8998                   u:object_r:hal_power_default_exec:s0
-/system/vendor/bin/hw/android\.hardware\.vr@1\.0-service\.msm8998                      u:object_r:hal_vr_default_exec:s0
-/system/vendor/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.1-service\.msm8998 u:object_r:hal_fingerprint_default_exec:s0
-/system/vendor/bin/hw/android\.hardware\.light@2\.0-service\.msm8998                   u:object_r:hal_light_default_exec:s0
+#/system/vendor/bin/hw/android\.hardware\.power@1\.1-service\.msm8998                        u:object_r:hal_power_default_exec:s0
+/system/vendor/bin/hw/android\.hardware\.power@1\.1-service-qti                              u:object_r:hal_power_default_exec:s0
+#/system/vendor/bin/hw/android\.hardware\.vr@1\.0-service\.msm8998                           u:object_r:hal_vr_default_exec:s0
+/system/vendor/bin/hw/android\.hardware\.biometrics\.fingerprint@2.1-service\.xiaomi_msm8998 u:object_r:hal_fingerprint_default_exec:s0
+/system/vendor/bin/hw/android\.hardware\.light@2\.0-service\.xiaomi_msm8998                  u:object_r:hal_light_default_exec:s0
 
 /dev/socket/perfd                          u:object_r:perfd_socket:s0
 /(vendor|system/vendor)/bin/perfd          u:object_r:perfd_exec:s0

@@ -16,3 +16,8 @@ allow untrusted_app_25 sysfs_input:dir search;
 allow untrusted_app_25 sysfs_leds:dir search;
 allow untrusted_app_25 tombstone_data_file:dir getattr;
 allow untrusted_app_25 vndservice_contexts_file:file getattr;
+
+allow untrusted_app proc_stat:file getattr;
+
+allow untrusted_app sysfs_zram:dir search;
+allow untrusted_app sysfs_zram:file { getattr open read };
