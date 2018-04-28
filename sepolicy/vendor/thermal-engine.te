@@ -17,9 +17,8 @@ allow thermal-engine thermal_dump_file:file { getattr create_file_perms };
 allow thermal-engine sysfs_power_supply:dir search;
 allow thermal-engine sysfs_power_supply:file { open read write };
 
-allow thermal-engine self:capability chown;
+allow thermal-engine self:capability { chown fowner };
 allow thermal-engine system_data_file:dir write;
-allow thermal-engine self:capability fowner;
 
 allow thermal-engine system_data_file:dir { add_name remove_name };
 
