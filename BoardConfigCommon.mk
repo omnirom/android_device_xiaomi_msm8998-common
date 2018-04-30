@@ -233,7 +233,9 @@ HOSTAPD_VERSION := VER_0_8_X
 WIFI_DRIVER_FW_PATH_AP := "ap"
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_P2P := "p2p"
-WIFI_DRIVER_OPERSTATE_PATH := "/sys/class/net/wlan0/operstate"
+WIFI_DRIVER_STATE_CTRL_PARAM     := "/dev/wlan"
+WIFI_DRIVER_STATE_ON             := "ON"
+WIFI_DRIVER_STATE_OFF            := "OFF"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Properties
