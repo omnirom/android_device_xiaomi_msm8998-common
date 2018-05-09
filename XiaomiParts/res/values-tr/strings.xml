@@ -16,9 +16,9 @@
 -->
 <resources>
   <string name="app_name">Xiaomi</string>
-  <string name="advanced_settings">Настройки устройства</string>
-  <string name="category_system">Система</string>
-  <string name="vib_strength_title_head">Сила вибрации</string>
-  <string name="display_title">Экран</string>
-  <string name="device_doze_title">Индикация событий</string>
+  <string name="advanced_settings">İleri seviye</string>
+  <string name="category_system">Sistem</string>
+  <string name="vib_strength_title_head">Titreşim kuvveti</string>
+  <string name="display_title">Ekran</string>
+  <string name="device_doze_title">Fa\'âl ekran</string>
 </resources>

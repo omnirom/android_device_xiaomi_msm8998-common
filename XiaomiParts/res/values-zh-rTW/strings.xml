@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-  <string name="app_name">Xiaomi</string>
-  <string name="advanced_settings">Настройки устройства</string>
-  <string name="category_system">Система</string>
-  <string name="vib_strength_title_head">Сила вибрации</string>
-  <string name="display_title">Экран</string>
-  <string name="device_doze_title">Индикация событий</string>
+  <string name="app_name">小米</string>
+  <string name="advanced_settings">進階選項</string>
+  <string name="category_system">系統</string>
+  <string name="vib_strength_title_head">震動強度</string>
+  <string name="display_title">顯示</string>
+  <string name="device_doze_title">環境顯示</string>
 </resources>

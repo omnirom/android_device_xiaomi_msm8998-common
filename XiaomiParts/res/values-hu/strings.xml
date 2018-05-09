@@ -16,9 +16,9 @@
 -->
 <resources>
   <string name="app_name">Xiaomi</string>
-  <string name="advanced_settings">Настройки устройства</string>
-  <string name="category_system">Система</string>
-  <string name="vib_strength_title_head">Сила вибрации</string>
-  <string name="display_title">Экран</string>
-  <string name="device_doze_title">Индикация событий</string>
+  <string name="advanced_settings">Haladó</string>
+  <string name="category_system">Rendszer</string>
+  <string name="vib_strength_title_head">Rezgés erőssége</string>
+  <string name="display_title">Kijelző</string>
+  <string name="device_doze_title">Környezeti kijelző</string>
 </resources>
