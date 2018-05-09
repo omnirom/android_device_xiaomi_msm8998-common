@@ -655,11 +655,9 @@ etc/permissions/embms.xml
 etc/permissions/qcrilhook.xml
 etc/permissions/radioconfig.xml
 etc/permissions/radioconfiginterface.xml
-etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
 framework/qcrilhook.jar|29558373f9f6346e0126ff83e2aea5b7a9b9b54c
 framework/qti-telephony-common.jar|2eba987ae297a892e895ec1e9a302b41dbe0232e
-framework/QtiTelephonyServicelibrary.jar
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk|92222f5c021b8c684b27394191a73203eb535146
 vendor/bin/ATFWD-daemon
 vendor/bin/netmgrd
