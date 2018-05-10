@@ -640,11 +640,8 @@ vendor/lib64/vendor.qti.hardware.qteeconnector@1.0_vendor.so
 -app/datastatusnotification/datastatusnotification.apk|8616ebf9c365991a6756f3a81155dbafb810ad04
 -app/embms/embms.apk|a0a7c0d28fa3c13423060ff870452b97621347c4
 -app/QtiTelephonyService/QtiTelephonyService.apk|7b06681dd64029f9aeb0dded016094a94b1456cc
--app/radioconfig/radioconfig.apk|f905ae39da257f4fcbdb23225542fe3cedf2aac0
 etc/permissions/embms.xml
 etc/permissions/qcrilhook.xml
-etc/permissions/radioconfig.xml
-etc/permissions/radioconfiginterface.xml
 framework/embmslibrary.jar
 framework/qcrilhook.jar|29558373f9f6346e0126ff83e2aea5b7a9b9b54c
 framework/qti-telephony-common.jar|2eba987ae297a892e895ec1e9a302b41dbe0232e
