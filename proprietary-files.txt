@@ -470,7 +470,6 @@ vendor/firmware/a540_zap.mdt
 
 # IMS
 -app/ims/ims.apk|aec816f2c32c290bf164f0ee27efdb72e18b4122
--app/imssettings/imssettings.apk|839fe2ab7f2a21f26f5b16e6691fc4ef52feaf98
 etc/permissions/qti-vzw-ims-internal.xml
 lib64/com.qualcomm.qti.imscmservice@1.0.so
 lib64/libimscamera_jni.so
