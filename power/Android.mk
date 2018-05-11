@@ -43,6 +43,8 @@ LOCAL_SRC_FILES := \
 LOCAL_C_INCLUDES := external/libxml2/include \
                     external/icu/icu4c/source/common
 
+LOCAL_CFLAGS += -Wall -Wextra -Werror
+
 ifneq ($(BOARD_POWER_CUSTOM_BOARD_LIB),)
     LOCAL_WHOLE_STATIC_LIBRARIES += $(BOARD_POWER_CUSTOM_BOARD_LIB)
 else
@@ -66,6 +68,10 @@ endif
 
 ifeq ($(call is-board-platform-in-list, msm8994), true)
 LOCAL_SRC_FILES += power-8994.c
+endif
+
+ifeq ($(call is-board-platform-in-list, msm8992), true)
+LOCAL_SRC_FILES += power-8992.c
 endif
 
 ifeq ($(call is-board-platform-in-list, msm8996), true)

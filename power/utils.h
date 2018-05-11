@@ -29,11 +29,13 @@
 
 #include <cutils/properties.h>
 
-int sysfs_read(char *path, char *s, int num_bytes);
-int sysfs_write(char *path, char *s);
+int sysfs_read(const char *path, char *s, int num_bytes);
+int sysfs_write(const char *path, char *s);
 int get_scaling_governor(char governor[], int size);
 int get_scaling_governor_check_cores(char governor[], int size,int core_num);
 int is_interactive_governor(char*);
+int is_ondemand_governor(char*);
+int is_msmdcvs_governor(char*);
 
 void vote_ondemand_io_busy_off();
 void unvote_ondemand_io_busy_off();
@@ -44,7 +46,9 @@ void perform_hint_action(int hint_id, int resource_values[],
 void undo_hint_action(int hint_id);
 void undo_initial_hint_action();
 void release_request(int lock_handle);
+void interaction(int duration, int num_args, int opt_list[]);
 int interaction_with_handle(int lock_handle, int duration, int num_args, int opt_list[]);
 int perf_hint_enable(int hint_id, int duration);
 
 long long calc_timespan_us(struct timespec start, struct timespec end);
+int get_soc_id(void);

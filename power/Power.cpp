@@ -21,8 +21,7 @@
 #define LOG_TAG "android.hardware.power@1.1-service-qti"
 #endif
 
-#include <android/log.h>
-#include <utils/Log.h>
+#include <log/log.h>
 #include "Power.h"
 #include "power-common.h"
 #include "power-helper.h"
@@ -76,7 +75,9 @@ Return<void> Power::setFeature(Feature feature, bool activate)  {
 Return<void> Power::getPlatformLowPowerStats(getPlatformLowPowerStats_cb _hidl_cb) {
     hidl_vec<PowerStatePlatformSleepState> states;
     uint64_t stats[MAX_PLATFORM_STATS * MAX_RPM_PARAMS] = {0};
+#ifndef LEGACY_STATS
     uint64_t *values;
+#endif
     struct PowerStatePlatformSleepState *state;
     int ret;
 

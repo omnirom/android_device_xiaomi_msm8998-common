@@ -37,7 +37,7 @@
 #include <stdlib.h>
 
 #define LOG_TAG "QCOM PowerHAL"
-#include <utils/Log.h>
+#include <log/log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
@@ -47,10 +47,25 @@
 #include "performance.h"
 #include "power-common.h"
 
-static int display_hint_sent;
-static int display_hint2_sent;
 static int first_display_off_hint;
-extern int display_boost;
+
+/**
+ * If target is 8974pro:
+ *     return true
+ * else:
+ *     return false
+ */
+static bool is_target_8974pro(void)
+{
+    static bool is_8974pro = false;
+    int soc_id;
+
+    soc_id = get_soc_id();
+    if (soc_id == 194 || (soc_id >= 208 && soc_id <= 218))
+        is_8974pro = true;
+
+    return is_8974pro;
+}
 
 int set_interactive_override(int on)
 {
@@ -68,43 +83,33 @@ int set_interactive_override(int on)
          * We need to be able to identify the first display off hint
          * and release the current lock holder
          */
-        if (display_boost) {
+        if (is_target_8974pro()) {
             if (!first_display_off_hint) {
                 undo_initial_hint_action();
                 first_display_off_hint = 1;
             }
             /* used for all subsequent toggles to the display */
-            if (!display_hint2_sent) {
-                undo_hint_action(DISPLAY_STATE_HINT_ID_2);
-                display_hint2_sent = 1;
-            }
+            undo_hint_action(DISPLAY_STATE_HINT_ID_2);
         }
 
-        if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
+        if (is_ondemand_governor(governor)) {
             int resource_values[] = {MS_500, SYNC_FREQ_600, OPTIMAL_FREQ_600, THREAD_MIGRATION_SYNC_OFF};
 
-            if (!display_hint_sent) {
-                perform_hint_action(DISPLAY_STATE_HINT_ID,
-                        resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
-                display_hint_sent = 1;
-            }
+            perform_hint_action(DISPLAY_STATE_HINT_ID,
+                    resource_values, ARRAY_SIZE(resource_values));
 
             return HINT_HANDLED;
         }
     } else {
         /* Display on */
-        if (display_boost && display_hint2_sent) {
+        if (is_target_8974pro()) {
             int resource_values2[] = {CPUS_ONLINE_MIN_2};
             perform_hint_action(DISPLAY_STATE_HINT_ID_2,
-                    resource_values2, sizeof(resource_values2)/sizeof(resource_values2[0]));
-            display_hint2_sent = 0;
+                    resource_values2, ARRAY_SIZE(resource_values2));
         }
 
-        if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
+        if (is_ondemand_governor(governor)) {
             undo_hint_action(DISPLAY_STATE_HINT_ID);
-            display_hint_sent = 0;
 
             return HINT_HANDLED;
         }

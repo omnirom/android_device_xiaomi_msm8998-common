@@ -37,8 +37,8 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-#define LOG_TAG "QTI PowerHAL"
-#include <utils/Log.h>
+#define LOG_TAG "QCOM PowerHAL"
+#include <log/log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
@@ -48,14 +48,10 @@
 #include "performance.h"
 #include "power-common.h"
 
-static int saved_interactive_mode = -1;
-static int display_hint_sent;
 static int video_encode_hint_sent;
-static int cam_preview_hint_sent;
 
 static int camera_hint_ref_count;
 static void process_video_encode_hint(void *metadata);
-//static void process_cam_preview_hint(void *metadata);
 
 int  power_hint_override(power_hint_t hint, void *data)
 {
@@ -68,6 +64,8 @@ int  power_hint_override(power_hint_t hint, void *data)
             process_video_encode_hint(data);
             return HINT_HANDLED;
         }
+        default:
+            break;
     }
     return HINT_NONE;
 }
@@ -75,9 +73,6 @@ int  power_hint_override(power_hint_t hint, void *data)
 int  set_interactive_override(int on)
 {
     char governor[80];
-    char tmp_str[NODE_MAX];
-    struct video_encode_metadata_t video_encode_metadata;
-    int rc;
 
     ALOGI("Got set_interactive hint");
 
@@ -94,28 +89,19 @@ int  set_interactive_override(int on)
 
     if (!on) {
         /* Display off. */
-             if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
             /* timer rate - 40mS*/
             int resource_values[] = {0x41424000, 0x28,
                                      };
-               if (!display_hint_sent) {
-                   perform_hint_action(DISPLAY_STATE_HINT_ID,
-                   resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
-                  display_hint_sent = 1;
-                }
-             } /* Perf time rate set for CORE0,CORE4 8952 target*/
-
+            perform_hint_action(DISPLAY_STATE_HINT_ID,
+                    resource_values, ARRAY_SIZE(resource_values));
+        } /* Perf time rate set for CORE0,CORE4 8952 target*/
     } else {
         /* Display on. */
-          if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-
+        if (is_interactive_governor(governor)) {
              undo_hint_action(DISPLAY_STATE_HINT_ID);
-             display_hint_sent = 0;
-          }
-   }
-    saved_interactive_mode = !!on;
+        }
+    }
     return HINT_HANDLED;
 }
 
@@ -159,9 +145,7 @@ static void process_video_encode_hint(void *metadata)
     }
 
     if (video_encode_metadata.state == 1) {
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR,
-            strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
             /* Sched_load and migration_notification disable
              * timer rate - 40mS*/
             int resource_values[] = {0x41430000, 0x1,
@@ -173,15 +157,13 @@ static void process_video_encode_hint(void *metadata)
                 if (!video_encode_hint_sent) {
                     perform_hint_action(video_encode_metadata.hint_id,
                     resource_values,
-                    sizeof(resource_values)/sizeof(resource_values[0]));
+                    ARRAY_SIZE(resource_values));
                     video_encode_hint_sent = 1;
                 }
            }
         }
     } else if (video_encode_metadata.state == 0) {
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR,
-            strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
             camera_hint_ref_count--;
             if (!camera_hint_ref_count) {
                 undo_hint_action(video_encode_metadata.hint_id);
@@ -192,5 +174,3 @@ static void process_video_encode_hint(void *metadata)
     }
     return;
 }
-
-

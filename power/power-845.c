@@ -37,8 +37,8 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-#define LOG_TAG "QTI PowerHAL"
-#include <utils/Log.h>
+#define LOG_TAG "QCOM PowerHAL"
+#include <log/log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
@@ -51,10 +51,7 @@
 static int display_fd;
 #define SYS_DISPLAY_PWR "/sys/kernel/hbtp/display_pwr"
 
-/* Declare function before use */
-void interaction(int duration, int num_args, int opt_list[]);
-
-int power_hint_override(power_hint_t hint, void *data)
+int power_hint_override(power_hint_t hint, void *UNUSED(data))
 {
     int ret_val = HINT_NONE;
     switch(hint) {
@@ -62,7 +59,7 @@ int power_hint_override(power_hint_t hint, void *data)
         {
             int resources[] = {0x40800100, 0x553};
             int duration = 100;
-            interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
+            interaction(duration, ARRAY_SIZE(resources), resources);
             ret_val = HINT_HANDLED;
         }
         break;

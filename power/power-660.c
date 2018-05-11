@@ -37,8 +37,8 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-#define LOG_TAG "QTI PowerHAL"
-#include <utils/Log.h>
+#define LOG_TAG "QCOM PowerHAL"
+#include <log/log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
@@ -50,34 +50,27 @@
 
 #define MIN_VAL(X,Y) ((X>Y)?(Y):(X))
 
-static int saved_interactive_mode = -1;
-static int display_hint_sent;
 static int video_encode_hint_sent;
-static int cam_preview_hint_sent;
 
 static int camera_hint_ref_count;
 static void process_video_encode_hint(void *metadata);
-//static void process_cam_preview_hint(void *metadata);
 
-static bool is_target_SDM630() /* Returns value=630 if target is SDM630 else value 0 */
+/**
+ * If target is SDM630:
+ *     return true
+ * else:
+ *     return false
+ */
+static bool is_target_SDM630(void)
 {
-    int fd;
-    bool is_target_SDM630=false;
-    char buf[10] = {0};
-    fd = open("/sys/devices/soc0/soc_id", O_RDONLY);
-    if (fd >= 0) {
-        if (read(fd, buf, sizeof(buf) - 1) == -1) {
-            ALOGW("Unable to read soc_id");
-            is_target_SDM630 = false;
-        } else {
-            int soc_id = atoi(buf);
-            if (soc_id == 318 || soc_id== 327) {
-            is_target_SDM630 = true; /* Above SOCID for SDM630 */
-            }
-        }
-    }
-    close(fd);
-    return is_target_SDM630;
+    static bool is_SDM630 = false;
+    int soc_id;
+
+    soc_id = get_soc_id();
+    if (soc_id == 318 || soc_id == 327)
+        is_SDM630 = true;
+
+    return is_SDM630;
 }
 
 int  power_hint_override(power_hint_t hint, void *data)
@@ -91,6 +84,8 @@ int  power_hint_override(power_hint_t hint, void *data)
             process_video_encode_hint(data);
             return HINT_HANDLED;
         }
+        default:
+            break;
     }
     return HINT_NONE;
 }
@@ -98,11 +93,8 @@ int  power_hint_override(power_hint_t hint, void *data)
 int  set_interactive_override(int on)
 {
     char governor[80];
-    char tmp_str[NODE_MAX];
     int resource_values[20];
     int num_resources;
-    struct video_encode_metadata_t video_encode_metadata;
-    int rc;
 
     ALOGI("Got set_interactive hint");
 
@@ -119,8 +111,7 @@ int  set_interactive_override(int on)
 
     if (!on) {
         /* Display off. */
-             if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
              /*
                  1. CPUfreq params
                         - hispeed freq for big - 1113Mhz
@@ -135,7 +126,7 @@ int  set_interactive_override(int on)
                               0x41400000, 0x4,
                               0x41820000, 0xA };
                 memcpy(resource_values, res, MIN_VAL(sizeof(resource_values), sizeof(res)));
-                num_resources = sizeof(res)/sizeof(res[0]);
+                num_resources = ARRAY_SIZE(res);
             }
              /*
                  1. CPUfreq params
@@ -153,26 +144,18 @@ int  set_interactive_override(int on)
                                0x41820000, 0xA,
                                0x40C54000, 0x1F4};
                 memcpy(resource_values, res, MIN_VAL(sizeof(resource_values), sizeof(res)));
-                num_resources = sizeof(res)/sizeof(res[0]);
+                num_resources = ARRAY_SIZE(res);
 
             }
-               if (!display_hint_sent) {
-                   perform_hint_action(DISPLAY_STATE_HINT_ID,
-                   resource_values, num_resources);
-                  display_hint_sent = 1;
-                }
-             }
-
+            perform_hint_action(DISPLAY_STATE_HINT_ID,
+                    resource_values, num_resources);
+        }
     } else {
         /* Display on. */
-          if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-
+        if (is_interactive_governor(governor)) {
              undo_hint_action(DISPLAY_STATE_HINT_ID);
-             display_hint_sent = 0;
-          }
-   }
-    saved_interactive_mode = !!on;
+        }
+    }
     return HINT_HANDLED;
 }
 
@@ -218,9 +201,7 @@ static void process_video_encode_hint(void *metadata)
     }
 
     if (video_encode_metadata.state == 1) {
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR,
-            strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
              /*
                  1. CPUfreq params
                         - hispeed freq for big - 1113Mhz
@@ -239,7 +220,7 @@ static void process_video_encode_hint(void *metadata)
                               0x40C2C000, 0X5,
                               0x41820000, 0xA};
                 memcpy(resource_values, res, MIN_VAL(sizeof(resource_values), sizeof(res)));
-                num_resources = sizeof(res)/sizeof(res[0]);
+                num_resources = ARRAY_SIZE(res);
 
             }
             /*
@@ -256,7 +237,7 @@ static void process_video_encode_hint(void *metadata)
                               0x41400100, 0x4,
                               0x41820000, 0xA};
                 memcpy(resource_values, res, MIN_VAL(sizeof(resource_values), sizeof(res)));
-                num_resources = sizeof(res)/sizeof(res[0]);
+                num_resources = ARRAY_SIZE(res);
             }
             camera_hint_ref_count++;
             if (camera_hint_ref_count == 1) {
@@ -268,9 +249,7 @@ static void process_video_encode_hint(void *metadata)
            }
         }
     } else if (video_encode_metadata.state == 0) {
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR,
-            strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
+        if (is_interactive_governor(governor)) {
             camera_hint_ref_count--;
             if (!camera_hint_ref_count) {
                 undo_hint_action(video_encode_metadata.hint_id);
@@ -281,5 +260,3 @@ static void process_video_encode_hint(void *metadata)
     }
     return;
 }
-
-

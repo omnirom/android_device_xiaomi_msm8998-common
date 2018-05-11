@@ -37,7 +37,7 @@
 #include <stdlib.h>
 
 #define LOG_TAG "QCOM PowerHAL"
-#include <utils/Log.h>
+#include <log/log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
 
@@ -47,8 +47,6 @@
 #include "performance.h"
 #include "power-common.h"
 
-static int display_hint_sent;
-
 int power_hint_override(power_hint_t hint, void *data)
 {
     switch(hint) {
@@ -57,7 +55,7 @@ int power_hint_override(power_hint_t hint, void *data)
             int resources[] = {0x702, 0x20B, 0x30B};
             int duration = 3000;
 
-            interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
+            interaction(duration, ARRAY_SIZE(resources), resources);
             return HINT_HANDLED;
         }
     }
