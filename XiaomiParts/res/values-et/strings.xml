@@ -14,4 +14,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">Täpsemad</string>
+  <string name="category_system">Süsteem</string>
+  <string name="vib_strength_title_head">Vibratsioonitugevus</string>
+  <string name="display_title">Ekraan</string>
+  <string name="device_doze_title">Ambientne ekraan</string>
+</resources>

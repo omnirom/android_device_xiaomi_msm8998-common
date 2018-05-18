@@ -51,4 +51,5 @@
   <string name="dialog_ok">OK</string>
   <!-- Help texts -->
   <string name="doze_settings_help_title">Nápověda</string>
+  <string name="doze_settings_help_text">Tyto funkce využívají události snímače k signalizaci oznámení během spánku. Vybraný snímač je povolen pouze tehdy, když zařízení obdrží oznámení. To pomáhá snížit spotřebu baterie. K dispozici je také možnost zapnout zvolený snímač, jakmile se obrazovka vypne, což způsobí vyšší spotřebu baterie.</string>
 </resources>

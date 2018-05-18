@@ -14,4 +14,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">小米</string>
+  <string name="advanced_settings">高级选项</string>
+  <string name="category_system">系统</string>
+  <string name="vib_strength_title_head">振动强度</string>
+  <string name="display_title">显示</string>
+  <string name="device_doze_title">主动显示</string>
+</resources>
