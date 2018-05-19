@@ -16,3 +16,6 @@ allow system_app wificond:binder call;
 
 allow system_app fingerprint_sysfs:file rw_file_perms;
 allow system_app sysfs_vibrator:file write;
+
+allow system_app camera_prop:property_service set;
+get_prop(system_app, camera_prop);
