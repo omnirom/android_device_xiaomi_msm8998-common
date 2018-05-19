@@ -11,6 +11,7 @@ camera.use_local_logger     u:object_r:camera_prop:s0
 persist.camera.use_local_logger     u:object_r:camera_prop:s0
 persist.camera.debug.trace     u:object_r:camera_prop:s0
 persist.camera.cfa.packagelist     u:object_r:camera_prop:s0
+persist.camera.HAL3.enable         u:object_r:camera_prop:s0
 
 wlan.daemon.version        u:object_r:wifi_prop:s0
 wlan.daemon.status         u:object_r:wifi_prop:s0
