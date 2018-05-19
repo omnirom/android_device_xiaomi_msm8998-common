@@ -33,7 +33,7 @@ import android.view.MenuItem;
 public class DeviceSettingsActivity extends Activity {
 
     private DeviceSettings mDeviceSettingsFragment;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

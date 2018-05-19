@@ -51,6 +51,8 @@
 /sys/kernel/debug/wlan.*                                                            u:object_r:debugfs_wifi:s0
 /d/wlan0/power_stats                                                                u:object_r:debugfs_wifi:s0
 /sys/devices/virtual/timed_output/vibrator/vtg_level                                u:object_r:sysfs_vibrator:s0
+/sys/sweep2sleep/sweep2sleep                                                        u:object_r:sysfs_vibrator:s0
+/sys/sweep2sleep/vib_strength                                                       u:object_r:sysfs_vibrator:s0
 /sys/devices(/platform)?/soc/[a-z0-9]+\.i2c/i2c-[0-9]+/[0-9]+-[a-z0-9]+/[a-z0-9]+\.i2c:qcom,[a-z0-9]+@[a-z0-9]:qcom,smb[a-z0-9]+-parallel-slave@[0-9]+/power_supply/parallel(/.*)? u:object_r:sysfs_usb_supply:s0
 
 /sys/devices/soc/qpnp-fg-[0-9a-f]+/power_supply/bms/battery_4p4v_present            u:object_r:sysfs_batteryinfo:s0

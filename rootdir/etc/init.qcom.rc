@@ -44,6 +44,8 @@ on init
 on post-fs
     chmod 0755 /sys/kernel/debug/tracing
     chown system system /sys/class/timed_output/vibrator/vtg_level
+    chown system system /sys/sweep2sleep/sweep2sleep
+    chown system system /sys/sweep2sleep/vib_strength
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
