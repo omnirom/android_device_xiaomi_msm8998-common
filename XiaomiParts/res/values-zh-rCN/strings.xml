@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">小米</string>
+  <string name="advanced_settings">高级选项</string>
+  <string name="category_system">系统</string>
+  <string name="vib_strength_title_head">振动强度</string>
+  <string name="display_title">显示</string>
+  <string name="device_doze_title">主动显示</string>
+  <string name="camera_title">相机</string>
+  <string name="camera_hal3_title">启用 Camera2 API</string>
+  <string name="s2s_title">滑动休眠</string>
+  <string name="s2s_vib_strength_title_head">滑动休眠振动</string>
+</resources>

@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">Titreşim kuvveti</string>
   <string name="display_title">Ekran</string>
   <string name="device_doze_title">Fa\'âl ekran</string>
+  <string name="camera_title">Kamera</string>
+  <string name="camera_hal3_title">Camera2 API\'yi fa\'âl hâle getir</string>
+  <string name="s2s_title">Uyutmak için kaydırma</string>
+  <string name="s2s_vib_strength_title_head">Uyutmak için kaydırma titreşimi</string>
 </resources>

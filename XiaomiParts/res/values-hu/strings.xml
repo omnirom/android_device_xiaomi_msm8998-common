@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">Rezgés erőssége</string>
   <string name="display_title">Kijelző</string>
   <string name="device_doze_title">Környezeti kijelző</string>
+  <string name="camera_title">Kamera</string>
+  <string name="camera_hal3_title">Kamera2 API engedélyezése</string>
+  <string name="s2s_title">Alvómód csúsztató mozdulattal</string>
+  <string name="s2s_vib_strength_title_head">Az Alvómód csúsztató mozdulattal rezgése</string>
 </resources>

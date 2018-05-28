@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">Síla vibrací</string>
   <string name="display_title">Obrazovka</string>
   <string name="device_doze_title">Ambientní displej</string>
+  <string name="camera_title">Fotoaparát</string>
+  <string name="camera_hal3_title">Povolit Camera2 API</string>
+  <string name="s2s_title">Sweep2sleep</string>
+  <string name="s2s_vib_strength_title_head">Vibrace Sweep2sleep</string>
 </resources>

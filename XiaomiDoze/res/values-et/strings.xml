@@ -18,14 +18,26 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_on">Sees</string>
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_off">Väljas</string>
   <!-- Device specific settings -->
+  <string name="device_settings_app_name">Täpsemad seaded</string>
   <!-- Ambient Display -->
+  <string name="ambient_display_title">Ambientne ekraan</string>
+  <string name="ambient_display_enable_title">Ambientne ekraan</string>
+  <string name="ambient_display_enable_summary">Ärata ekraan, kui saad teateid</string>
   <!-- Tilt sensor -->
   <!-- Proximity sensor -->
   <!-- Hand wave gesture -->
   <!-- Pick-up gesture -->
+  <string name="pick_up_gesture_title">Tõstmine</string>
+  <string name="pick_up_gesture_summary">Pulseeri teateid seadme tõstmisel</string>
   <!-- Pocket gesture -->
+  <string name="pocket_gesture_title">Tasku</string>
+  <string name="pocket_gesture_summary">Pulseeri teateid, kui seade võetakse taskust välja</string>
   <!-- Dialog texts -->
+  <string name="dialog_ok">OK</string>
   <!-- Help texts -->
+  <string name="doze_settings_help_title">Abi</string>
 </resources>
