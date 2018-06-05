@@ -14,4 +14,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">Erweitert</string>
+  <string name="category_system">System</string>
+  <string name="vib_strength_title_head">Vibrationsstärke</string>
+  <string name="display_title">Bildschirm</string>
+  <string name="camera_title">Kamera</string>
+  <string name="camera_hal3_title">Aktiviere Camera2 API</string>
+</resources>

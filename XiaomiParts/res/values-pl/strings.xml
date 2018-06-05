@@ -21,4 +21,5 @@
   <string name="vib_strength_title_head">Siła wibracji</string>
   <string name="display_title">Wyświetlacz</string>
   <string name="device_doze_title">Ekran dostosowany do otoczenia</string>
+  <string name="camera_title">Aparat</string>
 </resources>

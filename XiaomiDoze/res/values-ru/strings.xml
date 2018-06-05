@@ -27,6 +27,7 @@
   <string name="ambient_display_title">Индикация событий</string>
   <string name="ambient_display_enable_title">Индикация событий</string>
   <string name="ambient_display_enable_summary">Включать экран при получении уведомлений</string>
+  <string name="ambient_display_gestures_summary">Дополнительные жесты для пробуждения экрана</string>
   <string name="ambient_display_summary">Включать экран при получении уведомлений</string>
   <string name="ambient_display_summary_on">Включать экран при получении уведомлений</string>
   <string name="ambient_display_summary_off">Не включать экран при получении уведомлений</string>

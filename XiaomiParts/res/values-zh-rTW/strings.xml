@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">震動強度</string>
   <string name="display_title">顯示</string>
   <string name="device_doze_title">環境顯示</string>
+  <string name="camera_title">相機</string>
+  <string name="camera_hal3_title">啟用 Camera2 API</string>
+  <string name="s2s_title">滑動休眠</string>
+  <string name="s2s_vib_strength_title_head">滑動休眠振動</string>
 </resources>

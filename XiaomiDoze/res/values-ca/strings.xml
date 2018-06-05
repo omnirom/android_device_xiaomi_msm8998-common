@@ -18,9 +18,16 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_on">Activat</string>
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_off">Desactivat</string>
   <!-- Device specific settings -->
+  <string name="device_settings_app_name">Configuració avançada</string>
   <!-- Ambient Display -->
+  <string name="ambient_display_title">Pantalla activa</string>
+  <string name="ambient_display_enable_title">Pantalla activa</string>
+  <string name="ambient_display_enable_summary">Activa la pantalla en rebre avisos</string>
+  <string name="ambient_display_gestures_title">Gestos de pantalla activa</string>
   <!-- Tilt sensor -->
   <!-- Proximity sensor -->
   <!-- Hand wave gesture -->

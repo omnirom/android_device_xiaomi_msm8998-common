@@ -21,4 +21,6 @@
   <string name="vib_strength_title_head">Сила вибрации</string>
   <string name="display_title">Экран</string>
   <string name="device_doze_title">Индикация событий</string>
+  <string name="camera_title">Камера</string>
+  <string name="camera_hal3_title">Валючить Camera2 API</string>
 </resources>
