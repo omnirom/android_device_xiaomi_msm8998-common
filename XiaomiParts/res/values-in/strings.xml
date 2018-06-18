@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">Lanjutan</string>
+  <string name="category_system">Sistem</string>
+  <string name="vib_strength_title_head">Kekuatan getaran</string>
+  <string name="display_title">Tampilan</string>
+  <string name="device_doze_title">Tampilan ambien</string>
+  <string name="camera_title">Kamera</string>
+  <string name="camera_hal3_title">Aktifkan API Camera2</string>
+  <string name="s2s_title">Usap untuk tidur</string>
+  <string name="s2s_vib_strength_title_head">Getaran usap untuk tidur</string>
+</resources>

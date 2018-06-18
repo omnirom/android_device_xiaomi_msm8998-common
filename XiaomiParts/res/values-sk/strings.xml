@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">Rozšírené</string>
+  <string name="category_system">Systém</string>
+  <string name="vib_strength_title_head">Sila vibrácii</string>
+  <string name="display_title">Obrazovka</string>
+  <string name="device_doze_title">Ambientne zobrazenie</string>
+  <string name="camera_title">Fotoaparát</string>
+  <string name="camera_hal3_title">Povoliť Camera2 API</string>
+  <string name="s2s_title">Potiahnutím po obrazovke vypnite obrazovku</string>
+  <string name="s2s_vib_strength_title_head">Vibrácie pri potiahnutí po obrazovke a vypnutí</string>
+</resources>

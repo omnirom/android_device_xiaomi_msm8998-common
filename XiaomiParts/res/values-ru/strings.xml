@@ -23,4 +23,6 @@
   <string name="device_doze_title">Индикация событий</string>
   <string name="camera_title">Камера</string>
   <string name="camera_hal3_title">Валючить Camera2 API</string>
+  <string name="s2s_title">Провести по экрану, чтобы отключить экран</string>
+  <string name="s2s_vib_strength_title_head">Вибрация при свайпе для выключения экрана</string>
 </resources>

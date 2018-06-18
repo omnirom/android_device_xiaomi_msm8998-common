@@ -18,14 +18,23 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_on">Käytössä</string>
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_off">Ei käytössä</string>
   <!-- Device specific settings -->
+  <string name="device_settings_app_name">Lisäasetukset</string>
   <!-- Ambient Display -->
+  <string name="ambient_display_enable_summary">Herätä näyttö kun saat ilmoituksia</string>
+  <string name="ambient_display_summary">Herätä näyttö kun saat ilmoituksia</string>
+  <string name="ambient_display_summary_on">Näyttö herää kun saat ilmoituksia</string>
+  <string name="ambient_display_summary_off">Näyttö ei herää kun saat ilmoituksia</string>
   <!-- Tilt sensor -->
   <!-- Proximity sensor -->
   <!-- Hand wave gesture -->
   <!-- Pick-up gesture -->
   <!-- Pocket gesture -->
   <!-- Dialog texts -->
+  <string name="dialog_ok">OK</string>
   <!-- Help texts -->
+  <string name="doze_settings_help_title">Ohje</string>
 </resources>

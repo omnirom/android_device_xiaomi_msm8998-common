@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">Vibratsioonitugevus</string>
   <string name="display_title">Ekraan</string>
   <string name="device_doze_title">Ambientne ekraan</string>
+  <string name="camera_title">Kaamera</string>
+  <string name="camera_hal3_title">Luba Camera2 API</string>
+  <string name="s2s_title">Pühi unerežiimiks</string>
+  <string name="s2s_vib_strength_title_head">\"Pühi unerežiimiks\" vibratsioon</string>
 </resources>

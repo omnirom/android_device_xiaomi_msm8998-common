@@ -27,9 +27,20 @@
   <string name="ambient_display_title">Ambientne ekraan</string>
   <string name="ambient_display_enable_title">Ambientne ekraan</string>
   <string name="ambient_display_enable_summary">Ärata ekraan, kui saad teateid</string>
+  <string name="ambient_display_gestures_title">Ambientse ekraani žestid</string>
+  <string name="ambient_display_gestures_summary">Lisažestid ekraani äratamiseks</string>
+  <string name="ambient_display_summary">Ärata ekraan, kui saad teateid</string>
+  <string name="ambient_display_summary_on">Ekraan ärkab teadete saamisel</string>
+  <string name="ambient_display_summary_off">Ekraan ei ärka teadete saamisel</string>
   <!-- Tilt sensor -->
+  <string name="tilt_sensor_title">Pööramissensor</string>
   <!-- Proximity sensor -->
+  <string name="proximity_sensor_title">Lähedussensor</string>
   <!-- Hand wave gesture -->
+  <string name="hand_wave_gesture_title">Käeviibutus</string>
+  <string name="hand_wave_gesture_summary">Pulseeri teateid käeviibutusel</string>
+  <string name="hand_wave_gesture_flat_title">Tuvasta asend</string>
+  <string name="hand_wave_gesture_flat_summary">Pulseeri ainult siis, kui telefon on tasasel pinnal ülespööratud</string>
   <!-- Pick-up gesture -->
   <string name="pick_up_gesture_title">Tõstmine</string>
   <string name="pick_up_gesture_summary">Pulseeri teateid seadme tõstmisel</string>
@@ -40,4 +51,5 @@
   <string name="dialog_ok">OK</string>
   <!-- Help texts -->
   <string name="doze_settings_help_title">Abi</string>
+  <string name="doze_settings_help_text">Need funktsioonid kasutavad sensorite sündmusi, käivitamaks uinaku teatepulseeringu. Valitud sensor lubatakse vaid siis, kui seade saab teate, see aitab vähendada akukasutust. On olemas ka valik, lubamaks valitud sensori kohe, kui ekraan lülitub välja, see põhjustab suuremat akukasutust.</string>
 </resources>
