@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">高度な設定</string>
+  <string name="category_system">システム</string>
+  <string name="vib_strength_title_head">振動の強さ</string>
+  <string name="display_title">画面</string>
+  <string name="device_doze_title">アンビエント表示</string>
+  <string name="camera_title">カメラ</string>
+  <string name="camera_hal3_title">Camera2 API を有効にする</string>
+  <string name="s2s_title">スワイプしてスリープ</string>
+  <string name="s2s_vib_strength_title_head">スワイプしてスリープする時の振動</string>
+</resources>

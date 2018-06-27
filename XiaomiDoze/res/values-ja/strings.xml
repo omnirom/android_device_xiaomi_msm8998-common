@@ -18,14 +18,38 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_on">オン</string>
   <!-- Label for feature switch [CHAR LIMIT=30] -->
+  <string name="switch_bar_off">オフ</string>
   <!-- Device specific settings -->
+  <string name="device_settings_app_name">高度な設定</string>
   <!-- Ambient Display -->
+  <string name="ambient_display_title">アンビエント表示</string>
+  <string name="ambient_display_enable_title">アンビエント表示</string>
+  <string name="ambient_display_enable_summary">通知を受け取った時画面をスリープ解除する</string>
+  <string name="ambient_display_gestures_title">アンビエント表示ジェスチャー</string>
+  <string name="ambient_display_gestures_summary">スリープ解除の追加ジェスチャー</string>
+  <string name="ambient_display_summary">通知を受け取った時画面をスリープ解除する</string>
+  <string name="ambient_display_summary_on">通知を受け取った時に画面は点灯します</string>
+  <string name="ambient_display_summary_off">通知を受け取った時に画面は点灯しません</string>
   <!-- Tilt sensor -->
+  <string name="tilt_sensor_title">傾斜センサー</string>
   <!-- Proximity sensor -->
+  <string name="proximity_sensor_title">近接センサー</string>
   <!-- Hand wave gesture -->
+  <string name="hand_wave_gesture_title">手を振る</string>
+  <string name="hand_wave_gesture_summary">手を振った時の通知の点滅</string>
+  <string name="hand_wave_gesture_flat_title">方向の検出</string>
+  <string name="hand_wave_gesture_flat_summary">端末が平らな面に表向きに置かれているいる場合にの点滅する</string>
   <!-- Pick-up gesture -->
+  <string name="pick_up_gesture_title">持ち上げ</string>
+  <string name="pick_up_gesture_summary">持ち上げた時の通知の点滅</string>
   <!-- Pocket gesture -->
+  <string name="pocket_gesture_title">ポケット</string>
+  <string name="pocket_gesture_summary">ポケットから出した時の通知の点滅</string>
   <!-- Dialog texts -->
+  <string name="dialog_ok">OK</string>
   <!-- Help texts -->
+  <string name="doze_settings_help_title">ヘルプ</string>
+  <string name="doze_settings_help_text">これらの機能はセンサーイベントを使用してdoze通知の点滅を発信します。選択したセンサーは、デバイスが通知を受信したときにのみ有効になります。これはバッテリーの使用量を減らすのに役立ちます。画面が消えるとすぐに、選択したセンサーを有効にするオプションもあります。これはバッテリーの使用量が増えます。</string>
 </resources>

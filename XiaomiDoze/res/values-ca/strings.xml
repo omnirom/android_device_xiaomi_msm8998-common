@@ -28,11 +28,28 @@
   <string name="ambient_display_enable_title">Pantalla activa</string>
   <string name="ambient_display_enable_summary">Activa la pantalla en rebre avisos</string>
   <string name="ambient_display_gestures_title">Gestos de pantalla activa</string>
+  <string name="ambient_display_gestures_summary">Gests addicionals per despertar la pantalla</string>
+  <string name="ambient_display_summary">Activa la pantalla en rebre avisos</string>
+  <string name="ambient_display_summary_on">La pantalla s\'activarà en rebre avisos</string>
+  <string name="ambient_display_summary_off">La pantalla no s\'activarà en rebre avisos</string>
   <!-- Tilt sensor -->
+  <string name="tilt_sensor_title">Sensor d\'inclinació</string>
   <!-- Proximity sensor -->
+  <string name="proximity_sensor_title">Sensor de proximitat</string>
   <!-- Hand wave gesture -->
+  <string name="hand_wave_gesture_title">Moviment de la mà</string>
+  <string name="hand_wave_gesture_summary">Avisos intermitents amb el moviment de la mà</string>
+  <string name="hand_wave_gesture_flat_title">Detecta l\'orientació</string>
+  <string name="hand_wave_gesture_flat_summary">Només parpelleja si el telèfon està cara amunt sobre una superfície plana</string>
   <!-- Pick-up gesture -->
+  <string name="pick_up_gesture_title">Recollida</string>
+  <string name="pick_up_gesture_summary">Avisos intermitents en recollir</string>
   <!-- Pocket gesture -->
+  <string name="pocket_gesture_title">Butxaca</string>
+  <string name="pocket_gesture_summary">Avisos intermitents en treure de la butxaca</string>
   <!-- Dialog texts -->
+  <string name="dialog_ok">D\'acord</string>
   <!-- Help texts -->
+  <string name="doze_settings_help_title">Ajuda</string>
+  <string name="doze_settings_help_text">Aquestes característiques utilitzen esdeveniments del sensor per iniciar un parpelleig d\'avís en becaina. El sensor escollit només s\'habilita si el dispositiu rep un avís; això ajuda a reduir el consum de bateria. També hi ha una opció per habilitat el sensor escollit just quan la pantalla s\'apaga; això augmentarà el consum de bateria.</string>
 </resources>

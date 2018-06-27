@@ -22,4 +22,7 @@
   <string name="display_title">Wyświetlacz</string>
   <string name="device_doze_title">Ekran dostosowany do otoczenia</string>
   <string name="camera_title">Aparat</string>
+  <string name="camera_hal3_title">Aktywuj Camera2 API</string>
+  <string name="s2s_title">Przeciągnij aby uśpić</string>
+  <string name="s2s_vib_strength_title_head">Wibracja funkcji Przeciągnij aby uśpić</string>
 </resources>

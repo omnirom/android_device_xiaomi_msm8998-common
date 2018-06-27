@@ -21,4 +21,8 @@
   <string name="vib_strength_title_head">Intensità vibrazione</string>
   <string name="display_title">Display</string>
   <string name="device_doze_title">Display Ambient</string>
+  <string name="camera_title">Camera</string>
+  <string name="camera_hal3_title">Attiva API Camera2</string>
+  <string name="s2s_title">Scorri per sospendere</string>
+  <string name="s2s_vib_strength_title_head">Vibrazione Sweep2sleep</string>
 </resources>

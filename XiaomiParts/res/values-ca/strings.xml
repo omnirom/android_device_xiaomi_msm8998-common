@@ -14,4 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="app_name">Xiaomi</string>
+  <string name="advanced_settings">Avançat</string>
+  <string name="category_system">Sistema</string>
+  <string name="vib_strength_title_head">Intensitat de vibració</string>
+  <string name="display_title">Pantalla</string>
+  <string name="device_doze_title">Pantalla activa</string>
+  <string name="camera_title">Càmera</string>
+  <string name="camera_hal3_title">Habilita Camera2 API</string>
+  <string name="s2s_title">Llisca per dormir</string>
+  <string name="s2s_vib_strength_title_head">Vibració de llisca per dormir</string>
+</resources>
