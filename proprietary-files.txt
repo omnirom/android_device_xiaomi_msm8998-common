@@ -49,6 +49,14 @@ vendor/bin/wcnss_filter
 vendor/lib64/hw/android.hardware.bluetooth@1.0-impl-qti.so
 vendor/lib64/libbtnv.so
 
+# Bluetooth aptX - from wahoo
+lib64/libaptXHD_encoder.so|90f47f10af28b3ead143200cb4370b847c513127
+lib64/libaptX_encoder.so|0cebad28afcf29f931bdc2d24fce2730dc882ecf
+
+# Bluetooth LDAC - from wahoo
+lib64/libldacBT_abr.so|b9561fd6577409ddeacaec86ee3c17dccdc57263
+lib64/libldacBT_enc.so|123058c79944c34a2f07e87b405c75a830bb18bc
+
 # Camera
 bin/mm-qcamera-daemon
 lib/libMiCameraHal.so|799fe89fabb1ebdbc18b35ed2c72effe95ca7c91
@@ -235,14 +243,6 @@ vendor/lib64/libcneoplookup.so
 vendor/lib64/libwms.so
 vendor/lib64/libwqe.so
 vendor/lib64/libxml.so
-
-# Codecs atpXDH and ldac - from op3
-vendor/lib64/libaptX_encoder.so|0cebad28afcf29f931bdc2d24fce2730dc882ecf
-vendor/lib64/libaptXHD_encoder.so|90f47f10af28b3ead143200cb4370b847c513127
-vendor/lib/libaptX_encoder.so|984739a0bc968e18f75ced205733fe3f51c2d4f0
-vendor/lib/libaptXHD_encoder.so|974c486e4ca03faa0713553d9dfe2995ac93e01c
-vendor/lib/libldacBT_abr.so|0b22afcc8e3b49c5af67b8957ac9e08ea158ab20
-vendor/lib/libldacBT_enc.so|7a5ced9eb3fcc5745a76ed1c94611af75abd5cd1
 
 # Display postprocessing
 -vendor/lib/libsdm-disp-vndapis.so
@@ -595,7 +595,7 @@ etc/permissions/org.simalliance.openmobileapi.xml|2106c9a80cb2b7a19164b21f1d3fe3
 -priv-app/SmartcardService/SmartcardService.apk|c9aafb0c8b5659c4bab206b69e2b817ec876e05b
 
 # Thermal
-vendor/bin/msm_irqbalance
+vendor/bin/msm_irqbalance|7ce3f35f7e0f12af1e2d36aa095d56a5ec88c51e
 vendor/bin/thermal-engine
 vendor/etc/thermal-engine-8998-high.conf
 vendor/etc/thermal-engine-8998-map.conf
