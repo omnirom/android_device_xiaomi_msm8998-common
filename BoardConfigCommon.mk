@@ -199,7 +199,6 @@ TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/double_tap_enable"
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
 TARGET_USES_QCOM_BSP := false
-TARGET_USE_SDCLANG := true
 # Fix build on Jenkins
 BOARD_USES_VENDOR_QCOM := false
 
