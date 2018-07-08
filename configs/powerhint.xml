@@ -31,33 +31,19 @@
 -->
 
 <Powerhint>
-    <Hint type="0x0A00"> <!--video encode 30 fps-->
-        <Resource opcode="0x40804000" value="0x7A6"/>   <!-- B CPU - Cluster max freq ~1.958 Ghz -->
-    </Hint>
     <Hint type="0x0F00"> <!--sustained performance-->
         <Resource opcode="0x4280C000" value="0xB4"/>    <!-- GPU - min freq 180 Mhz -->
         <Resource opcode="0x42810000" value="0x156"/>   <!-- GPU - max freq 342 Mhz -->
         <Resource opcode="0x42814000" value="0x0"/>     <!-- GPUBW freq uncapped -->
     </Hint>
-    <Hint type="0x1000"> <!--vr mode-->
-        <Resource opcode="0x4280C000" value="0x203"/>   <!-- GPU - min freq 515 Mhz -->
-        <Resource opcode="0x42810000" value="0x203"/>   <!-- GPU - max freq 515 Mhz -->
-        <Resource opcode="0x42814000" value="0x2E57"/>  <!-- GPUBW freq 1555 Mhz-->
-    </Hint>
-    <Hint type="0x1001"> <!--vr mode sustained performance-->
-        <Resource opcode="0x4280C000" value="0x19E"/>   <!-- GPU - min freq 414 Mhz -->
-        <Resource opcode="0x42810000" value="0x19E"/>   <!-- GPU - max freq 414 Mhz -->
-        <Resource opcode="0x42814000" value="0x1E4F"/>  <!-- GPUBW freq 1017 Mhz -->
-    </Hint>
     <Hint type="0x1A00"> <!--interaction-->
-        <Resource opcode="0x42C18000" value="0xF"/>       <!-- Top App schedtune boost to 15 -->
+        <Resource opcode="0x42C18000" value="0x14"/>      <!-- Top App schedtune boost to 20 -->
         <Resource opcode="0x4180C000" value="0x0"/>       <!-- CPUBW disable hysteresis -->
-        <Resource opcode="0x41800000" value="0x16"/>      <!-- CPUBW min freq 300 MHz -->
+        <Resource opcode="0x41800000" value="0x1F"/>      <!-- CPUBW min freq 412 MHz -->
     </Hint>
     <Hint type="0x1B00"> <!--boost-->
-        <Resource opcode="0x40800100" value="0x40C"/>     <!-- L CPU - Cluster min freq 1036 Mhz -->
         <Resource opcode="0x4180C000" value="0x0"/>       <!-- CPUBW disable hysteresis -->
         <Resource opcode="0x40400000" value="0x1"/>       <!-- POWER_COLLAPSE -->
-        <Resource opcode="0x41800000" value="0x3A"/>      <!-- CPUBW min freq 768 MHz -->
+        <Resource opcode="0x41800000" value="0x4E"/>      <!-- CPUBW min freq 1017 MHz -->
     </Hint>
 </Powerhint>
