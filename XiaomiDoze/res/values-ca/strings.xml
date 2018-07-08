@@ -51,5 +51,5 @@
   <string name="dialog_ok">D\'acord</string>
   <!-- Help texts -->
   <string name="doze_settings_help_title">Ajuda</string>
-  <string name="doze_settings_help_text">Aquestes característiques utilitzen esdeveniments del sensor per iniciar un parpelleig d\'avís en becaina. El sensor escollit només s\'habilita si el dispositiu rep un avís; això ajuda a reduir el consum de bateria. També hi ha una opció per habilitat el sensor escollit just quan la pantalla s\'apaga; això augmentarà el consum de bateria.</string>
+  <string name="doze_settings_help_text">Aquestes característiques utilitzen esdeveniments del sensor per iniciar un parpelleig d\'avís en becaina. El sensor escollit només s\'habilita si el dispositiu rep un avís; això ajuda a reduir el consum de bateria. També hi ha una opció per habilitar el sensor escollit just quan la pantalla s\'apaga; això augmentarà el consum de bateria.</string>
 </resources>
