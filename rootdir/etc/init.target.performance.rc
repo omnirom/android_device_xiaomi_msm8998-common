@@ -1,9 +1,4 @@
 on init
-    # Disable UFS powersaving
-    write /sys/devices/soc/1da4000.ufshc/clkgate_enable 0
-    write /sys/devices/soc/1da4000.ufshc/clkscale_enable 0
-    write /sys/devices/soc/1da4000.ufshc/hibern8_on_idle_enable 0
-
     # Set up schedtune
     write /dev/stune/foreground/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.boost 10
@@ -11,31 +6,19 @@ on init
 
     # Add a cpuset for the camera daemon
     mkdir /dev/cpuset/camera-daemon 0750 cameraserver cameraserver
-    write /dev/cpuset/camera-daemon/cpus 0-7
+    write /dev/cpuset/camera-daemon/cpus 0
     write /dev/cpuset/camera-daemon/mems 0
 
     chmod 0660 /dev/cpuset/camera-daemon/tasks
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
 
-# For cpusets initialize for Silver Only first and then Silver + Gold
-# Silver Only configuration cannot work with 0-7
 on boot
-    write /dev/cpuset/background/cpus 0-7
-    write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/system-background/cpus 0-7
-
     # set default schedtune value for foreground/top-app (only affects EAS)
     write /dev/stune/foreground/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.boost 1
     write /dev/stune/top-app/schedtune.prefer_idle 1
 
 on charger
-    # Enable UFS powersaving
-    write /sys/devices/soc/1da4000.ufshc/clkgate_enable 1
-    write /sys/devices/soc/1da4000.ufshc/clkscale_enable 1
-    write /sys/devices/soc/1da4000.ufshc/hibern8_on_idle_enable 1
-
     write /sys/class/input/input0/enabled 0
     write /sys/class/input/input1/enabled 0
     write /sys/class/input/input2/enabled 0
@@ -58,9 +41,6 @@ on charger
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "userspace"
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 300000
 
-    wait /dev/block/bootdevice/by-name/system
-    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
-
     wait /dev/block/bootdevice/by-name/persist
     mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
 
@@ -68,20 +48,19 @@ on charger
 
     start hvdcp_opti
     start thermal-engine
+    start qcom-post-boot
 
     setprop sys.usb.configfs 1
     setprop sys.usb.config adb
 
 on late-fs
     # boot time fs tune
-    write /sys/block/sda/queue/iosched/slice_idle 0
     write /sys/block/sda/queue/iostats 0
     write /sys/block/sda/queue/nr_requests 256
-    write /sys/block/sda/queue/read_ahead_kb 2048
-    write /sys/block/sde/queue/iosched/slice_idle 0
     write /sys/block/sde/queue/iostats 0
     write /sys/block/sde/queue/nr_requests 256
-    write /sys/block/sde/queue/read_ahead_kb 2048
+
+    setprop sys.io.scheduler "cfq"
 
 on property:sys.boot_completed=1
     # end boot time fs tune
@@ -105,15 +84,20 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu6/online 1
     write /sys/devices/system/cpu/cpu7/online 1
 
-    # online clusters
+    # Setup governor
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "schedutil"
+
+    # Set min freqs
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 300000
+
+    # Configure governor settings for little cluster
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 20000
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/iowait_boost_enable 1
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
 
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "schedutil"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 300000
+    # Configure governor settings for big cluster
     write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/iowait_boost_enable 1
     write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 500
@@ -136,12 +120,10 @@ on property:sys.boot_completed=1
     write /sys/module/lpm_levels/system/pwr/pwr-l2-ret/idle_enabled N
 
     # Setup cpusets
-    write /dev/cpuset/background/cpus 0-1
-    write /dev/cpuset/camera-daemon/cpus 0-3
-    write /dev/cpuset/foreground/cpus 0-3,6-7
     write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/system-background/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-3,6-7
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/camera-daemon/cpus 0-3
 
-    # Enable power setting and set sys.post_boot.parsed to 1
-    # to start perfd
-    start qcom-power
+    start qcom-post-boot
