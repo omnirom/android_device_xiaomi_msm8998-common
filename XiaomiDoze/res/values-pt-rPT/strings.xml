@@ -24,13 +24,13 @@
   <!-- Device specific settings -->
   <string name="device_settings_app_name">Definições avançadas</string>
   <!-- Ambient Display -->
-  <string name="ambient_display_title">Visualização de ambiente</string>
-  <string name="ambient_display_enable_title">Visualização de ambiente</string>
+  <string name="ambient_display_title">Visualização ambiente</string>
+  <string name="ambient_display_enable_title">Visualização ambiente</string>
   <string name="ambient_display_enable_summary">Acordar o ecrã quando receber notificações</string>
-  <string name="ambient_display_gestures_title">Gestos da visualização de ambiente</string>
+  <string name="ambient_display_gestures_title">Gestos da visualização ambiente</string>
   <string name="ambient_display_gestures_summary">Gestos adicionais para acordar o ecrã</string>
   <string name="ambient_display_summary">Acordar o ecrã quando receber notificações</string>
-  <string name="ambient_display_summary_on">O ecrã irá ligar quando receber notificações</string>
+  <string name="ambient_display_summary_on">O ecrã irá ligar-se quando receber notificações</string>
   <string name="ambient_display_summary_off">O ecrã não se irá ligar quando receber notificações</string>
   <!-- Tilt sensor -->
   <string name="tilt_sensor_title">Sensor de inclinação</string>

@@ -20,7 +20,7 @@
   <string name="category_system">Sistema</string>
   <string name="vib_strength_title_head">Intensidade da vibração</string>
   <string name="display_title">Ecrã</string>
-  <string name="device_doze_title">Visualização de ambiente</string>
+  <string name="device_doze_title">Visualização ambiente</string>
   <string name="camera_title">Câmara</string>
   <string name="camera_hal3_title">Ativar Camera2 API</string>
   <string name="s2s_title">Deslizar para desligar o ecrã</string>
