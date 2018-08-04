@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemProperties;
@@ -40,7 +42,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.util.Log;
-import com.android.internal.util.omni.PackageUtils;
 
 public class DeviceSettings extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
@@ -54,6 +55,7 @@ public class DeviceSettings extends PreferenceFragment implements
     public static final String FILE_S2S_TYPE = "/sys/sweep2sleep/sweep2sleep";
 
     final String KEY_DEVICE_DOZE = "device_doze";
+    final String KEY_DEVICE_DOZE_PACKAGE_NAME = "org.lineageos.settings.doze";
 
     private static final String HAL3_SYSTEM_PROPERTY = "persist.camera.HAL3.enabled";
 
@@ -83,7 +85,7 @@ public class DeviceSettings extends PreferenceFragment implements
         }
 
 
-       if (!PackageUtils.isAppInstalled(this, "org.lineageos.settings.doze")) {
+        if (!isAppInstalled(KEY_DEVICE_DOZE_PACKAGE_NAME)) {
             PreferenceCategory displayCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_DISPLAY);
             displayCategory.removePreference(findPreference(KEY_DEVICE_DOZE));
         }
@@ -122,5 +124,16 @@ public class DeviceSettings extends PreferenceFragment implements
             return true;
         }
         return true;
+    }
+
+    private boolean isAppInstalled(String uri) {
+        PackageManager pm = getContext().getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
     }
 }
