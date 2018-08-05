@@ -28,19 +28,27 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cstdio>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/sysinfo.h>
+#include <android-base/logging.h>
 
 #include <android-base/file.h>
 #include <android-base/properties.h>
 #include <android-base/strings.h>
 
 #include "property_service.h"
-#include "vendor_init.h"
 
 using android::base::GetProperty;
 using android::base::ReadFileToString;
 using android::base::Trim;
 using android::init::property_set;
+
+namespace android {
+namespace init {
+
+char const *heapminfree;
+char const *heapmaxfree;
 
 static void init_alarm_boot_properties()
 {
@@ -67,15 +75,25 @@ static void init_alarm_boot_properties()
          * 7 -> CBLPWR_N pin toggled (for external power supply)
          * 8 -> KPDPWR_N pin toggled (power key pressed)
          */
-        if ((Trim(boot_reason) == "3" || reboot_reason == "true")
-                && Trim(power_off_alarm) == "1")
-            property_set("ro.alarm_boot", "true");
-        else
-            property_set("ro.alarm_boot", "false");
+         if ((Trim(boot_reason) == "3" || reboot_reason == "true")
+                 && Trim(power_off_alarm) == "1") {
+             property_set("ro.alarm_boot", "true");
+         } else {
+             property_set("ro.alarm_boot", "false");
+         }
     }
 }
 
 void vendor_load_properties()
 {
+    std::string platform;
+
+    platform = GetProperty("ro.board.platform", "");
+    if (platform != ANDROID_TARGET)
+        return;
+
     init_alarm_boot_properties();
+
 }
+}  // namespace init
+}  // namespace android
