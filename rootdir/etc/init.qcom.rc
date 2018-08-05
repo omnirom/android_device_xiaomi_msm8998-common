@@ -40,6 +40,8 @@ on init
 on post-fs
     chmod 0755 /sys/kernel/debug/tracing
     chown system system /sys/class/timed_output/vibrator/vtg_level
+    chown system system /sys/sweep2sleep/sweep2sleep
+    chown system system /sys/sweep2sleep/vib_strength
 
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
