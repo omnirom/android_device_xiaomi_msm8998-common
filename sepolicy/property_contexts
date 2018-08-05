@@ -15,3 +15,6 @@ sys.panel.                                                    u:object_r:sensors
 # Thermal engine
 persist.sys.thermal.                                          u:object_r:thermal_prop:s0
 sys.thermal.                                                  u:object_r:thermal_prop:s0
+
+# Camera
+#persist.camera.                                               u:object_r:camera_prop:s0
