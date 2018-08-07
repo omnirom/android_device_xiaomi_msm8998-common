@@ -1,4 +1,9 @@
 on init
+    # Disable UFS powersaving
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 0
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 0
+    write /sys/devices/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 0
+
     # Set up schedtune
     write /dev/stune/foreground/schedtune.prefer_idle 1
     write /dev/stune/top-app/schedtune.boost 10
@@ -11,6 +16,10 @@ on init
 
     chmod 0660 /dev/cpuset/camera-daemon/tasks
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
+
+    # ZRAM setup
+    write /sys/block/zram0/comp_algorithm lz4
+    write /proc/sys/vm/page-cluster 0
 
 on boot
     # set default schedtune value for foreground/top-app (only affects EAS)
@@ -44,6 +53,13 @@ on charger
     wait /dev/block/bootdevice/by-name/persist
     mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
 
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+
+    # Enable UFS powersaving
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1
+
     load_system_props
 
     start hvdcp_opti
@@ -63,6 +79,11 @@ on late-fs
     setprop sys.io.scheduler "cfq"
 
 on property:sys.boot_completed=1
+    # Enable UFS powersaving
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1
+
     # end boot time fs tune
     write /sys/block/sda/queue/iostats 1
     write /sys/block/sda/queue/nr_requests 128
@@ -126,4 +147,8 @@ on property:sys.boot_completed=1
     write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/camera-daemon/cpus 0-3
 
+    # Enable ZRAM on boot_complete
+    swapon_all /vendor/etc/fstab.qcom
+
+    # Run post poot script
     start qcom-post-boot

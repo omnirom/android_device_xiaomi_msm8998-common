@@ -43,6 +43,10 @@ on post-fs
     chown system system /sys/sweep2sleep/sweep2sleep
     chown system system /sys/sweep2sleep/vib_strength
 
+    chmod 0664 /sys/devices/virtual/graphics/fb0/idle_time
+    chown system graphics /sys/devices/virtual/graphics/fb0/idle_time
+    write /sys/devices/virtual/graphics/fb0/idle_time 100
+
 on post-fs-data
     mkdir /data/vendor/misc 01771 system system
 
@@ -294,7 +298,7 @@ service ipacm /vendor/bin/ipacm
 service qti /vendor/bin/qti
     class main
     user radio
-    group radio net_raw diag usb net_admin
+    group radio oem_2901 diag usb net_admin
     writepid /dev/cpuset/system-background/tasks
 
 service sensors /vendor/bin/sensors.qcom
