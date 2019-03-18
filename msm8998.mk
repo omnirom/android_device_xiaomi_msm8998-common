@@ -156,6 +156,10 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-service \
     android.hardware.renderscript@1.0-impl
 
+# Display Manager for Omni
+PRODUCT_PACKAGES += \
+    OmniDisplayManager
+
 # Doze
 PRODUCT_PACKAGES += \
     XiaomiDoze \
