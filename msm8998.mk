@@ -134,7 +134,8 @@ PRODUCT_PACKAGES += \
     MiuiCamera
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/camera/etc/miuicamera-permissions.xml:system/etc/default-permissions/miuicamera-permissions.xml
+    $(LOCAL_PATH)/camera/etc/miuicamera-permissions.xml:system/etc/default-permissions/miuicamera-permissions.xml \
+    $(LOCAL_PATH)/camera/etc/privapp-permissions-miuicamera.xml:system/etc/permissions/privapp-permissions-miuicamera.xml
 
 # Display
 PRODUCT_PACKAGES += \
