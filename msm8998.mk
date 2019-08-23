@@ -138,6 +138,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/camera/etc/miuicamera-permissions.xml:system/etc/default-permissions/miuicamera-permissions.xml \
     $(LOCAL_PATH)/camera/etc/com.android.camera.xml:system/etc/permissions/com.android.camera.xml
 
+# Charger
+PRODUCT_PACKAGES += \
+    omni_charger_res_images \
+    animation.txt \
+    font_charger.png
+
 # Display
 PRODUCT_PACKAGES += \
     gralloc.msm8998 \
